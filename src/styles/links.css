@@ -1,0 +1,165 @@
+.mobile-view {
+  border: 10px solid #000000;
+  margin-left: 5em;
+  margin-top: 2em;
+  width: 16em;
+  height: 28.5em;
+  border-radius: 20px;
+  .mobile-view-top {
+    background-color: #342b26;
+    border-radius: 8px 8px 15px 15px;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    .mobile-share-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: none;
+      margin-top: 0.6em;
+      margin-left: 0.6em;
+      .mobile-share-img {
+        width: 1em;
+      }
+    }
+    .show-profile-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0.3em;
+      .profile-photo-div {
+        background-color: #f3f3f1;
+        border-radius: 50%;
+        width: 4em;
+        height: 4em;
+        img {
+          width: 4em;
+          height: 4em;
+        }
+      }
+      .mobile-username {
+        font-family: "Poppins", serif;
+        font-weight: 700;
+        font-size: 1em;
+        line-height: 35.5px;
+        color: #ffffff;
+      }
+    }
+  }
+  .mobile-view-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .link-shop-section {
+      background-color: #c9c9c9;
+      margin-top: 0.9em;
+      border-radius: 35px;
+      border: 1px solid #bfbfbf;
+      width: 80%;
+      height: 2.4rem;
+      display: flex;
+      align-items: center;
+      padding: 0.2em;
+      padding-top: 0.1em;
+      button {
+        border: none;
+        height: 1.8rem;
+        width: 50%;
+        background-color: transparent;
+        color: #595959;
+        margin: 0;
+        border-radius: 35px;
+      }
+    }
+    .show-links,
+    .show-shops {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      width: 87%;
+      height: 9em;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      .link,
+      .shop {
+        display: flex;
+        align-items: center;
+        background-color: #c9c9c9;
+        border-radius: 35px;
+        margin-bottom: 0.6em;
+        height: 2em;
+        .link-image,
+        .shop-image {
+          background-color: #ffffff;
+          margin: 0.3em;
+          height: 1.7em;
+          width: 1.9em;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            height: 1em;
+            width: 1em;
+          }
+        }
+        .link-title,
+        .shop-title {
+          font-family: "Poppins", serif;
+          font-weight: 500;
+          font-size: 0.6em;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+  .mobile-view-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .get-connected-btn {
+      width: 12em;
+      height: 1.7em;
+      background-color: #35ca7d;
+      border: none;
+      border-radius: 35px;
+      box-shadow: 0px 4.65px 14.89px 0px #00000026;
+      color: #ffffff;
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.7em;
+      line-height: 19.07px;
+      text-align: center;
+    }
+    .mobile-footer-logo {
+      display: flex;
+      align-items: center;
+      margin-top: 0.3em;
+      .mobile-logo {
+        margin-top: 0.4em;
+        width: 1.5em;
+        height: 1.5em;
+      }
+      .mobile-logo-title {
+        font-family: "Plus Jakarta Sans", serif;
+        font-weight: 800;
+        font-size: 1em;
+        color: #000000;
+        sup {
+          font-family: "Plus Jakarta Sans", serif;
+          font-weight: 800;
+          line-height: 30.24px;
+          color: #000000;
+          font-size: 0.2em;
+          position: relative;
+          top: -2em;
+          margin-left: 0.4em;
+        }
+      }
+    }
+  }
+}
+
+.mobile-active-btn {
+  background-color: #28a263 !important;
+}
