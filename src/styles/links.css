@@ -50,6 +50,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-height: 14em;
+    overflow: auto;
     .link-shop-section {
       background-color: #c9c9c9;
       margin-top: 0.9em;
@@ -78,8 +80,6 @@
       flex-direction: column;
       width: 87%;
       height: 9em;
-      overflow-y: auto;
-      scroll-behavior: smooth;
       .link,
       .shop {
         display: flex;
@@ -109,6 +109,7 @@
           font-weight: 500;
           font-size: 0.6em;
           line-height: 24px;
+          color: #1E1E20;
         }
       }
     }

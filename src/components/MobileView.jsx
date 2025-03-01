@@ -7,12 +7,24 @@ import instaColor from "../assets/instaColor.png";
 import fbColor from "../assets/fbColor.png";
 import xColor from "../assets/xColor.png";
 import "../styles/links.css";
+import { useNavigate } from "react-router";
 
-const MobileView = ({username, bannerBackground}) => {
+const MobileView = ({ username, bannerBackground, links, shops }) => {
   const [activeBtn, setActiveBtn] = useState("links");
+  const socialMediaIcons = {
+    yt: youtubeColor,
+    insta: instaColor,
+    fb: fbColor,
+    x: xColor,
+  };
+  const navigate = useNavigate();
+
   return (
     <div className="mobile-view">
-      <div className="mobile-view-top" style={{ backgroundColor: bannerBackground }}>
+      <div
+        className="mobile-view-top"
+        style={{ backgroundColor: bannerBackground }}
+      >
         <button className="mobile-share-btn">
           <img
             src={shareProfileIcon}
@@ -24,21 +36,21 @@ const MobileView = ({username, bannerBackground}) => {
           <div className="profile-photo-div">
             <img src={bigProfile} alt="ProfileIcon" />
           </div>
-          <h3 className="mobile-username" style={{
-                  color:
-                    bannerBackground === "#FFFFFF"
-                      ? "black"
-                      : "white",
-                }}>@{username}</h3>
+          <h3
+            className="mobile-username"
+            style={{
+              color: bannerBackground === "#FFFFFF" ? "black" : "white",
+            }}
+          >
+            @{username}
+          </h3>
         </div>
       </div>
       <div className="mobile-view-content">
         <div className="link-shop-section">
           <button
             className={
-              activeBtn == "links"
-                ? "mobile-active-btn"
-                : "mobile-link-btn"
+              activeBtn == "links" ? "mobile-active-btn" : "mobile-link-btn"
             }
             onClick={() => setActiveBtn("links")}
           >
@@ -46,45 +58,39 @@ const MobileView = ({username, bannerBackground}) => {
           </button>
           <button
             className={
-              activeBtn == "shop"
-                ? "mobile-active-btn"
-                : "mobile-shop-btn"
+              activeBtn == "shop" ? "mobile-active-btn" : "mobile-shop-btn"
             }
             onClick={() => setActiveBtn("shop")}
           >
             Shop
           </button>
         </div>
-        { activeBtn == "links" ? <div className="show-links">
-          <div className="link">
-            <div className="link-image">
-              <img src={youtubeColor} alt="Youtube" />
-            </div>
-            <h3 className="link-title">Latest YouTube Video</h3>
-          </div>
-          <div className="link">
-            <div className="link-image">
-              <img src={instaColor} alt="Instagram" />
-            </div>
-            <h3 className="link-title">Latest Instagram reel</h3>
-          </div>
-        </div> : <div className="show-shops">
-          <div className="shop">
-            <div className="shop-image">
-              <img src={fbColor} alt="Facebook" />
-            </div>
-            <h3 className="shop-title">Latest Fb Video</h3>
-          </div>
-          <div className="shop">
-            <div className="shop-image">
-              <img src={xColor} alt="X" />
-            </div>
-            <h3 className="shop-title">Latest X reel</h3>
-          </div>
-        </div>}
+        {activeBtn == "links"
+          ? links.length > 0 &&
+            links.map((link) => (
+              <div className="show-links" key={link._id}>
+                <div className="link">
+                  <div className="link-image">
+                    <img src={socialMediaIcons[link.socialMedia]} alt="Youtube" />
+                  </div>
+                  <a className="link-title" href={link.url} target="_blank">{link.title}</a>
+                </div>
+              </div>
+            ))
+          : shops.length > 0 &&
+            shops.map((link) => (
+              <div className="show-links" key={link._id}>
+                <div className="link">
+                  <div className="link-image">
+                    <img src={socialMediaIcons[link.socialMedia]} alt="Youtube" />
+                  </div>
+                  <a className="link-title" href={link.url} target="_blank">{link.title}</a>
+                </div>
+              </div>
+            ))}
       </div>
       <div className="mobile-view-footer">
-        <button className="get-connected-btn">Get Connected</button>
+        <button className="get-connected-btn" onClick={() => navigate("/")}>Get Connected</button>
         <div className="mobile-footer-logo">
           <img src={blackLogo} alt="Logo" className="mobile-logo" />
           <h2 className="mobile-logo-title">
@@ -97,3 +103,12 @@ const MobileView = ({username, bannerBackground}) => {
 };
 
 export default MobileView;
+
+{
+  /* <div className="link">
+            <div className="link-image">
+              <img src={instaColor} alt="Instagram" />
+            </div>
+            <h3 className="link-title">Latest Instagram reel</h3>
+          </div> */
+}

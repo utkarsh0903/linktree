@@ -166,7 +166,12 @@ const Dashboard = () => {
               bio={activeUser.bio}
             />
           )}
-          {activeTab == "appearance" && <Appearance />}
+          {activeTab == "appearance" && (
+            <Appearance
+              username={username}
+              bannerBackground={activeUser.bannerBackground}
+            />
+          )}
           {activeTab == "analytics" && <Analytics />}
           {activeTab == "settings" && <Settings />}
         </div>

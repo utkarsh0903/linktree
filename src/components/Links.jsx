@@ -108,10 +108,11 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
 
   return (
     <div className="link-container">
-      {console.log(userLinks)}
       <MobileView
         username={username}
         bannerBackground={updatedData.bannerBackground}
+        links={links}
+        shops={shops}
       />
       <div className="link-profile-edit">
         <div className="profile-section">
@@ -186,7 +187,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
           {activeBtn == "links" ? (
             links.length > 0 && (
               links.map((link) => (
-                <div className="profile-show-links">
+                <div className="profile-show-links" key={link._id}>
               <div className="list-bullet">
                 <img src={dots} alt="Dots" />
               </div>
@@ -235,7 +236,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
           ) : (
             shops.length > 0 && (
               shops.map((link) => (
-                <div className="profile-show-links">
+                <div className="profile-show-links" key={link._id}>
               <div className="list-bullet">
                 <img src={dots} alt="Dots" />
               </div>

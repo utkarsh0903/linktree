@@ -57,7 +57,6 @@ const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
       alert("Please fill out both fields!");
       return;
     }
-    console.log(addLinkData);
     const res = await addLinks(addLinkData);
     if (res.status === 200) {
       const data = await res.json(res);
