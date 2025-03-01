@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 // import "../styles/register.css";
-// import { register } from "../services/index";
+import { register } from "../services/index";
 import { Link, useNavigate } from "react-router-dom";
 import halfBg from "../assets/halfBg.png";
 import greenLogo from "../assets/greenLogo.png";
@@ -27,6 +27,21 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log(registerData);
+    const res = await register(registerData);
+    if (res.status === 200) {
+      alert("Registered successfully");
+      navigate("/login");
+      setRegisterData({
+        username: "",
+        email: "",
+        mobile: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
   };
 
   return (
