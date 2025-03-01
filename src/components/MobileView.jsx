@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import profileIcon from "../assets/profileIcon.png";
 import shareProfileIcon from "../assets/shareProfileIcon.png";
+import bigProfile from "../assets/bigProfile.png";
 import blackLogo from "../assets/blackLogo.png";
 import youtubeColor from "../assets/youtubeColor.png";
 import instaColor from "../assets/instaColor.png";
@@ -22,7 +22,7 @@ const MobileView = () => {
         </button>
         <div className="show-profile-info">
           <div className="profile-photo-div">
-            <img src={profileIcon} alt="ProfileIcon" />
+            <img src={bigProfile} alt="ProfileIcon" />
           </div>
           <h3 className="mobile-username">@opopo_08</h3>
         </div>
