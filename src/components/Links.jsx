@@ -8,23 +8,74 @@ import clicks from "../assets/clicks.png";
 import editIcon from "../assets/editIcon.png";
 import deleteIcon from "../assets/deleteIcon.png";
 import whiteLogo from "../assets/whiteLogo.png";
+import blackLogo from "../assets/blackLogo.png";
 import bigProfile from "../assets/bigProfile.png";
 import MobileView from "./MobileView";
+import { updateProfile } from "../services";
 
-const Links = () => {
+const Links = ({ username, setUsername }) => {
   const [activeBtn, setActiveBtn] = useState("links");
-  const [textCount, setTextCount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    username: username,
+    bio: "Bio",
+    bannerBackground: "#342B26",
+  });
 
   const handleTextChange = (event) => {
     const words = event.target.value.split(/\s+/).filter(Boolean);
     if (words.length <= 80) {
-      setTextCount(event.target.value);
+      setUpdatedData((prev) => ({
+        ...prev,
+        bio: event.target.value,
+      }));
+    }
+  };
+
+  const changeUsername = (event) => {
+    setUsername(event.target.value);
+    setUpdatedData((prev) => ({
+      ...prev,
+      username: event.target.value,
+    }));
+  };
+
+  const changeBannerBg = (bgColor) => {
+    setUpdatedData((prev) => ({
+      ...prev,
+      bannerBackground: bgColor,
+    }));
+  };
+
+  const changeBannerInput = (event) => {
+    setUpdatedData((prev) => ({
+      ...prev,
+      bannerBackground: event.target.value,
+    }));
+  };
+
+  const handleSave = async (e) => {
+    if (!username.trim()) {
+      alert("Username cannot be empty!");
+      return;
+    }
+    setLoading(true);
+    e.preventDefault();
+    console.log(updatedData);
+    setLoading(false);
+    const res = await updateProfile(updatedData);
+    if (res.status === 200) {
+      const data = await res.json(res);
+      alert(data.message);
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
     }
   };
 
   return (
     <div className="link-container">
-      <MobileView />
+      <MobileView username={username} bannerBackground={updatedData.bannerBackground} />
       <div className="link-profile-edit">
         <div className="profile-section">
           <h2 className="profile-heading">Profile</h2>
@@ -40,17 +91,23 @@ const Links = () => {
             </div>
             <div className="edit-profile-title">
               <label htmlFor="title">Profile Title</label>
-              <input type="text" />
+              <input
+                type="text"
+                placeholder={`@${username}`}
+                value={username}
+                onChange={(e) => changeUsername(e)}
+              />
             </div>
             <div className="edit-profile-bio">
               <label htmlFor="bio">Bio</label>
               <textarea
-                value={textCount}
+                value={updatedData.bio}
                 onChange={handleTextChange}
                 name="bio"
+                placeholder="Bio"
               ></textarea>
               <div className="textarea-count">
-                {textCount.split(/\s+/).filter(Boolean).length}/80
+                {updatedData.bio.split(/\s+/).filter(Boolean).length}/80
               </div>
             </div>
           </div>
@@ -134,32 +191,78 @@ const Links = () => {
         <div className="banner-section">
           <h2 className="banner-heading">Banner</h2>
           <div className="banner-edit-section">
-            <div className="show-banner">
+            <div
+              className="show-banner"
+              style={{ backgroundColor: updatedData.bannerBackground }}
+            >
               <div className="profile-photo-div">
                 <img src={bigProfile} alt="ProfileIcon" />
               </div>
-              <p className="banner-username">@opopo_08</p>
+              <p
+                className="banner-username"
+                style={{
+                  color:
+                    updatedData.bannerBackground === "#FFFFFF"
+                      ? "black"
+                      : "white",
+                }}
+              >
+                @{username}
+              </p>
               <div className="banner-logo-username">
-                <img src={whiteLogo} alt="" />
-                <p>/opopo_08</p>
+                <img src={updatedData.bannerBackground === "#FFFFFF" ? blackLogo : whiteLogo} alt="Logo" />
+                <p style={{
+                  color:
+                    updatedData.bannerBackground === "#FFFFFF"
+                      ? "black"
+                      : "white",
+                }}>/{username}</p>
               </div>
             </div>
             <div className="change-banner">
               <div className="choose-color-section">
-                <h3 className="choose-color-heading">Custom Background Color</h3>
+                <h3 className="choose-color-heading">
+                  Custom Background Color
+                </h3>
                 <div className="choose-color">
-                  <div className="brown-color-div"></div>
-                  <div className="white-color-div"></div>
-                  <div className="black-color-div"></div>
+                  <div
+                    className="brown-color-div"
+                    onClick={() => changeBannerBg("#342B26")}
+                  ></div>
+                  <div
+                    className="white-color-div"
+                    onClick={() => changeBannerBg("#FFFFFF")}
+                  ></div>
+                  <div
+                    className="black-color-div"
+                    onClick={() => changeBannerBg("#000000")}
+                  ></div>
                 </div>
               </div>
               <div className="type-color">
-                <div className="show-typed-color"></div>
-                <input type="text" placeholder="#000000" />
+                <div
+                  className="show-typed-color"
+                  style={{
+                    backgroundColor: updatedData.bannerBackground,
+                    border: updatedData.bannerBackground == "#FFFFFF" && "1px solid black"
+                  }}
+                ></div>
+                <input
+                  type="text"
+                  placeholder="#000000"
+                  value={updatedData.bannerBackground}
+                  onChange={changeBannerInput}
+                />
               </div>
             </div>
           </div>
-          <button className="signup-btn save-profile-btn">Save</button>
+          <button
+            className="signup-btn save-profile-btn"
+            onClick={(e) => handleSave(e)}
+            disabled={loading}
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
     </div>

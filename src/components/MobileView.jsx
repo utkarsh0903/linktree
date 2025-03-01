@@ -8,11 +8,11 @@ import fbColor from "../assets/fbColor.png";
 import xColor from "../assets/xColor.png";
 import "../styles/links.css";
 
-const MobileView = () => {
+const MobileView = ({username, bannerBackground}) => {
   const [activeBtn, setActiveBtn] = useState("links");
   return (
     <div className="mobile-view">
-      <div className="mobile-view-top">
+      <div className="mobile-view-top" style={{ backgroundColor: bannerBackground }}>
         <button className="mobile-share-btn">
           <img
             src={shareProfileIcon}
@@ -24,7 +24,12 @@ const MobileView = () => {
           <div className="profile-photo-div">
             <img src={bigProfile} alt="ProfileIcon" />
           </div>
-          <h3 className="mobile-username">@opopo_08</h3>
+          <h3 className="mobile-username" style={{
+                  color:
+                    bannerBackground === "#FFFFFF"
+                      ? "black"
+                      : "white",
+                }}>@{username}</h3>
         </div>
       </div>
       <div className="mobile-view-content">

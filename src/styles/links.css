@@ -278,6 +278,12 @@
           border: none;
           background-color: transparent;
           padding-left: 0.5em;
+          &::placeholder {
+            font-family: "Inter", serif;
+            font-weight: 400;
+            font-size: 0.9em;
+            color: #000000;
+          }
           &:focus {
             outline: none;
           }
@@ -313,6 +319,12 @@
           border: none;
           background-color: transparent;
           padding-left: 0.5em;
+          &::placeholder {
+            font-family: "Inter", serif;
+            font-weight: 400;
+            font-size: 0.9em;
+            color: #000000;
+          }
           &:focus {
             outline: none;
           }

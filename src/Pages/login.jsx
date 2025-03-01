@@ -26,8 +26,8 @@ const Login = () => {
     if (res.status === 200) {
       const data = await res.json(res.token);
       localStorage.setItem("token", data.token);
-      alert("Login successfully");
-      navigate("/dashboard");
+      alert(data.message);
+      navigate("/category");
       setLoginData({
         email: "",
         password: "",
@@ -41,7 +41,10 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="left-container">
-        <img className="logo" src={greenLogo} alt="Logo" />
+        <img src={greenLogo} alt="Logo" className="logo" />
+        <h2 className="logo-title">
+          SPARK<sup>TM</sup>
+        </h2>
         <div className="register-content">
           <div className="heading">
             <h1>Sign in to your Spark</h1>

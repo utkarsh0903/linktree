@@ -9,12 +9,12 @@ import greenLogo from "../assets/greenLogo.png";
 const Register = () => {
   const navigate = useNavigate();
 
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        navigate("/dashboard");
-      }
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const [registerData, setRegisterData] = useState({
     firstname: "",
@@ -26,10 +26,10 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(registerData);
     const res = await register(registerData);
     if (res.status === 200) {
-      alert("Registered successfully");
+      const data = await res.json(res);
+      alert(data.message);
       navigate("/login");
       setRegisterData({
         username: "",
@@ -47,7 +47,10 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="left-container">
-        <img className="logo" src={greenLogo} alt="Logo" />
+        <img src={greenLogo} alt="Logo" className="logo" />
+        <h2 className="logo-title">
+          SPARK<sup>TM</sup>
+        </h2>
         <div className="register-content">
           <div className="heading">
             <h1>Sign up to your Spark</h1>
@@ -128,8 +131,10 @@ const Register = () => {
               required
             />
             <input type="checkbox" />
-            <p>By creating an account, I agree to our <span>Terms of use </span> 
-            and <span>Privacy Policy</span> </p>
+            <p>
+              By creating an account, I agree to our <span>Terms of use </span>
+              and <span>Privacy Policy</span>{" "}
+            </p>
             <button className="register-btn" type="submit">
               Create an account
             </button>
