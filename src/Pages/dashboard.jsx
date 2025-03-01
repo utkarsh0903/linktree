@@ -17,68 +17,40 @@ import Links from "../components/Links";
 import Appearance from "../components/Appearance";
 import Analytics from "../components/Analytics";
 import Settings from "../components/Settings";
+import { getUser } from "../services";
 
 const Dashboard = () => {
   const [showLogoutBtn, setShowLogoutBtn] = useState(false);
   //   const [isCreateLinkModalOpen, setIsCreateLinkModalOpen] = useState(false);
   //   const [newLinkAdded, setNewLinkAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  //   const [activeUser, setActiveUser] = useState("");
-  //   const [shortName, setShortName] = useState("");
+    const [activeUser, setActiveUser] = useState("");
+    const [username, setUsername] = useState("");
   const [activeTab, setActiveTab] = useState("links");
-  //   const [currentDate, setCurrentDate] = useState("");
-  //   const [helloMessage, setHelloMessage] = useState("");
-  //   const [search, setSearch] = useState('')
   const navigate = useNavigate();
 
-  //   useEffect(() => {
-  //     const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       navigate("/login");
-  //       return;
-  //     }
-  //     showUserDetails();
-  //     const todayDate = new Date();
-  //     const date = todayDate.toLocaleDateString("en-US", {
-  //       weekday: "short",
-  //       month: "short",
-  //       day: "numeric",
-  //     });
-  //     setCurrentDate(date);
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      showUserDetails();
 
-  //     const currentTime = todayDate.getHours();
-  //     if (currentTime >= 5 && currentTime < 12) {
-  //       setHelloMessage("Good Morning");
-  //     } else if (currentTime >= 12 && currentTime < 17) {
-  //       setHelloMessage("Good Afternoon");
-  //     } else if (currentTime >= 17 && currentTime < 20) {
-  //       setHelloMessage("Good Evening");
-  //     } else {
-  //       setHelloMessage("Good Night");
-  //     }
-  //   }, []);
+    }, []);
 
-  //   const showUserDetails = async () => {
-  //     const res = await getUser();
-  //     if (res.status === 200) {
-  //       const data = await res.json(res);
-  //       setIsLoading(false);
-  //       setActiveUser(data);
-  //       updateShortName(data.username);
-  //     } else {
-  //       const data = await res.json(res);
-  //       alert(data.message);
-  //     }
-  //   };
-
-  //   const updateShortName = (username) => {
-  //     const name = username.trim().split(" ");
-  //     const shortUsername =
-  //       name.length >= 2
-  //         ? name[0][0].toUpperCase() + name[1][0].toUpperCase()
-  //         : name[0]?.[0]?.toUpperCase();
-  //     setShortName(shortUsername);
-  //   };
+    const showUserDetails = async () => {
+      const res = await getUser();
+      if (res.status === 200) {
+        const data = await res.json(res);
+        setIsLoading(false);
+        setActiveUser(data);
+        setUsername(data.username);
+      } else {
+        const data = await res.json(res);
+        alert(data.message);
+      }
+    };
 
   const handleLogout = () => {
     localStorage.clear("token");
@@ -144,7 +116,7 @@ const Dashboard = () => {
             className="profile-btn"
             onClick={() => setShowLogoutBtn(!showLogoutBtn)}
           >
-            JENNY WILSON
+            {activeUser.firstname} {activeUser.lastname}
           </button>
           {showLogoutBtn && (
             <div className="dropdown-content">
@@ -163,7 +135,7 @@ const Dashboard = () => {
           ) : (
             <div className="current-data">
               <p className="dashboard-username">
-                Hi, <span className="name-highlight">Jenny Wilson</span>!
+                Hi, <span className="name-highlight">{activeUser.firstname} {activeUser.lastname}</span>!
               </p>
               <p className="dashboard-message">
                 Congratulations . You got a great response today .{" "}
@@ -185,7 +157,7 @@ const Dashboard = () => {
           )}
         </div>
         <div className="hero-section">
-          {activeTab == "links" && <Links />}
+          {activeTab == "links" && <Links username={username} setUsername={setUsername} />}
           {activeTab == "appearance" && <Appearance />}
           {activeTab == "analytics" && <Analytics />}
           {activeTab == "settings" && <Settings />}
