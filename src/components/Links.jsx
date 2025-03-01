@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/links.css";
 import whiteShop from "../assets/whiteShop.png";
 import blackShop from "../assets/blackShop.png";
@@ -11,16 +11,42 @@ import whiteLogo from "../assets/whiteLogo.png";
 import blackLogo from "../assets/blackLogo.png";
 import bigProfile from "../assets/bigProfile.png";
 import MobileView from "./MobileView";
-import { updateProfile } from "../services";
+import { getLinks, updateProfile } from "../services";
+import AddLink from "./AddLink";
 
-const Links = ({ username, setUsername }) => {
+const Links = ({ username, setUsername, bannerBackground, bio }) => {
   const [activeBtn, setActiveBtn] = useState("links");
   const [loading, setLoading] = useState(false);
+  const [isSliderOn, setIsSliderOn] = useState(false);
+  const [isLinkAdded, setIsLinkAdded] = useState(false);
+  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
+  const [userLinks, setUserLinks] = useState([]);
   const [updatedData, setUpdatedData] = useState({
     username: username,
-    bio: "Bio",
-    bannerBackground: "#342B26",
+    bio: bio || "Bio",
+    bannerBackground: bannerBackground || "#342B26",
   });
+
+  useEffect(() => {
+    setUpdatedData({
+      username: username || "",
+      bio: bio || "Bio",
+      bannerBackground: bannerBackground || "#342B26",
+    });
+    getUserLinks();
+    setIsLinkAdded(false);
+  }, [bio, bannerBackground, isLinkAdded]);
+
+  const getUserLinks = async () => {
+    const res = await getLinks();
+    if (res.status === 200) {
+      const data = await res.json(res);
+      setUserLinks(data.links);
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
+  };
 
   const handleTextChange = (event) => {
     const words = event.target.value.split(/\s+/).filter(Boolean);
@@ -62,7 +88,6 @@ const Links = ({ username, setUsername }) => {
     setLoading(true);
     e.preventDefault();
     console.log(updatedData);
-    setLoading(false);
     const res = await updateProfile(updatedData);
     if (res.status === 200) {
       const data = await res.json(res);
@@ -71,11 +96,23 @@ const Links = ({ username, setUsername }) => {
       const data = await res.json(res);
       alert(data.message);
     }
+    setLoading(false);
   };
+
+  const handleAddLinkBtn = () => {
+    setIsAddLinkModalOpen(true);
+  };
+
+  const links = userLinks.filter((link) => link.type === "links");
+  const shops = userLinks.filter((link) => link.type === "shop");
 
   return (
     <div className="link-container">
-      <MobileView username={username} bannerBackground={updatedData.bannerBackground} />
+      {console.log(userLinks)}
+      <MobileView
+        username={username}
+        bannerBackground={updatedData.bannerBackground}
+      />
       <div className="link-profile-edit">
         <div className="profile-section">
           <h2 className="profile-heading">Profile</h2>
@@ -139,12 +176,17 @@ const Links = ({ username, setUsername }) => {
               Add Shop
             </button>
           </div>
-          <button className="add-link-btn">
+          <button className="add-link-btn" onClick={() => handleAddLinkBtn()}>
             <img src={plus} alt="plus" />
             Add
           </button>
+          {isAddLinkModalOpen && (
+            <AddLink setIsAddLinkModalOpen={setIsAddLinkModalOpen} setIsLinkAdded={setIsLinkAdded} />
+          )}
           {activeBtn == "links" ? (
-            <div className="profile-show-links">
+            links.length > 0 && (
+              links.map((link) => (
+                <div className="profile-show-links">
               <div className="list-bullet">
                 <img src={dots} alt="Dots" />
               </div>
@@ -152,11 +194,28 @@ const Links = ({ username, setUsername }) => {
                 <div className="link-details">
                   <div className="link-name-url">
                     <div className="link-name">
-                      <p>Instagram</p>
-                      <img src={editIcon} alt="Edit" />
+                      <div className="link-flex" >
+                        <p>{link.title}</p>
+                        <img src={editIcon} alt="Edit" />
+                      </div>
+                      <div className="link-expiry-slider">
+                        <div className="link-slider">
+                          <input
+                            type="checkbox"
+                            id="active-slider"
+                            className="change-slider"
+                            checked={link.expiry}
+                            onChange={() => setIsSliderOn(!isSliderOn)}
+                          />
+                          <label
+                            htmlFor="active-slider"
+                            className="move-slider"
+                          ></label>
+                        </div>
+                      </div>
                     </div>
                     <div className="link-url">
-                      <p>https://www.instagram.com/opopo_08/</p>
+                      <p>{link.url}</p>
                       <img src={editIcon} alt="Edit" />
                     </div>
                   </div>
@@ -171,21 +230,57 @@ const Links = ({ username, setUsername }) => {
                 </div>
               </div>
             </div>
+              ))
+            )
           ) : (
-            <div className="show-shops">
-              {/* <div className="shop">
-                <div className="shop-image">
-                  <img src={fbColor} alt="Facebook" />
-                </div>
-                <h3 className="shop-title">Latest Fb Video</h3>
+            shops.length > 0 && (
+              shops.map((link) => (
+                <div className="profile-show-links">
+              <div className="list-bullet">
+                <img src={dots} alt="Dots" />
               </div>
-              <div className="shop">
-                <div className="shop-image">
-                  <img src={xColor} alt="X" />
+              <div className="list-link">
+                <div className="link-details">
+                  <div className="link-name-url">
+                    <div className="link-name">
+                      <div className="link-flex" >
+                        <p>{link.title}</p>
+                        <img src={editIcon} alt="Edit" />
+                      </div>
+                      <div className="link-expiry-slider">
+                        <div className="link-slider">
+                          <input
+                            type="checkbox"
+                            id="active-slider"
+                            className="change-slider"
+                            checked={link.expiry}
+                            onChange={() => setIsSliderOn(!isSliderOn)}
+                          />
+                          <label
+                            htmlFor="active-slider"
+                            className="move-slider"
+                          ></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="link-url">
+                      <p>{link.url}</p>
+                      <img src={editIcon} alt="Edit" />
+                    </div>
+                  </div>
+                  <div className="link-active"></div>
                 </div>
-                <h3 className="shop-title">Latest X reel</h3>
-              </div> */}
+                <div className="link-clicks-delete-section">
+                  <div className="link-clicks">
+                    <img src={clicks} alt="Clicks" />
+                    <p>0 clicks</p>
+                  </div>
+                  <img src={deleteIcon} alt="Delete" />
+                </div>
+              </div>
             </div>
+              ))
+            )
           )}
         </div>
         <div className="banner-section">
@@ -210,13 +305,24 @@ const Links = ({ username, setUsername }) => {
                 @{username}
               </p>
               <div className="banner-logo-username">
-                <img src={updatedData.bannerBackground === "#FFFFFF" ? blackLogo : whiteLogo} alt="Logo" />
-                <p style={{
-                  color:
+                <img
+                  src={
                     updatedData.bannerBackground === "#FFFFFF"
-                      ? "black"
-                      : "white",
-                }}>/{username}</p>
+                      ? blackLogo
+                      : whiteLogo
+                  }
+                  alt="Logo"
+                />
+                <p
+                  style={{
+                    color:
+                      updatedData.bannerBackground === "#FFFFFF"
+                        ? "black"
+                        : "white",
+                  }}
+                >
+                  /{username}
+                </p>
               </div>
             </div>
             <div className="change-banner">
@@ -244,7 +350,9 @@ const Links = ({ username, setUsername }) => {
                   className="show-typed-color"
                   style={{
                     backgroundColor: updatedData.bannerBackground,
-                    border: updatedData.bannerBackground == "#FFFFFF" && "1px solid black"
+                    border:
+                      updatedData.bannerBackground == "#FFFFFF" &&
+                      "1px solid black",
                   }}
                 ></div>
                 <input

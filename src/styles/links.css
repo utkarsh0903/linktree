@@ -350,7 +350,8 @@
     display: flex;
     flex-direction: column;
     padding-left: 1.5em;
-    min-height: 7em;
+    height: 17em;
+    overflow-y: scroll;
     .add-link-shop {
       background-color: #f3f3f1;
       margin-top: 0.9em;
@@ -431,32 +432,34 @@
         width: 90%;
         .link-details {
           display: flex;
-          margin-top: 0.8em;
           .link-name-url {
             display: flex;
             flex-direction: column;
+            width: 100%;
             .link-name {
               display: flex;
               align-items: center;
-              p {
-                color: #575757;
-                font-family: "Poppins", serif;
-                font-weight: 600;
-                font-size: 0.9em;
-                line-height: 21.96px;
-                letter-spacing: 0%;
-              }
-              img {
-                margin-left: 0.3em;
-                width: 1em;
-                height: 1em;
-                cursor: pointer;
+              justify-content: space-between;
+              .link-flex {
+                display: flex;
+                p {
+                  color: #575757;
+                  font-family: "Poppins", serif;
+                  font-weight: 600;
+                  font-size: 0.9em;
+                  letter-spacing: 0%;
+                }
+                img {
+                  margin-left: 0.3em;
+                  width: 1em;
+                  height: 1em;
+                  cursor: pointer;
+                }
               }
             }
             .link-url {
               display: flex;
               align-items: center;
-              margin-top: 0.4em;
               p {
                 color: #767676;
                 font-family: "Poppins", serif;

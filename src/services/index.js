@@ -51,3 +51,24 @@ export const login = (data) => {
       body: JSON.stringify(data),
     });
   };
+
+  export const addLinks = (data) => {
+    return fetch(`${URL}/link/add-links`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    });
+  };
+
+  export const getLinks = () => {
+    return fetch(`${URL}/link/get-links`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+  };
