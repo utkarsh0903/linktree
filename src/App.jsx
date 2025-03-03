@@ -1,5 +1,6 @@
 
 import "./App.css";
+import MobileView from "./components/MobileView.jsx";
 import Category from "./Pages/category.jsx";
 import Dashboard from "./Pages/dashboard.jsx";
 import Home from "./Pages/home.jsx";
@@ -18,6 +19,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/category" element={<Category />} />
+      <Route path="/:id" element={<MobileView />} />
       {/* <Route path="*" element={<NoPage />} /> */}
     </Routes>
     </BrowserRouter>

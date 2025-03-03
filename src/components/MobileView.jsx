@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import shareProfileIcon from "../assets/shareProfileIcon.png";
 import bigProfile from "../assets/bigProfile.png";
 import blackLogo from "../assets/blackLogo.png";
@@ -7,12 +7,91 @@ import instaColor from "../assets/instaColor.png";
 import fbColor from "../assets/fbColor.png";
 import xColor from "../assets/xColor.png";
 import "../styles/links.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { getLinksById, getUserById, updateClick } from "../services";
 
-const MobileView = ({username, bannerBackground}) => {
+const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
   const [activeBtn, setActiveBtn] = useState("links");
+  const [isLoading, setIsLoading] = useState(true);
+  const socialMediaIcons = {
+    yt: youtubeColor,
+    insta: instaColor,
+    fb: fbColor,
+    x: xColor,
+  };
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const [userData, setUserData] = useState({
+    username: "",
+    bannerBackground: "#342B26",
+    links: [],
+    shops: [],
+  });
+
+  useEffect(() => {
+    if (!username && id) {
+      showUserDetails(id);
+      showUserLinks(id);
+    }
+  }, [id]);
+
+  const showUserDetails = async (id) => {
+    const res = await getUserById(id);
+    if (res.status === 200) {
+      const data = await res.json(res);
+      setIsLoading(false);
+      setUserData({
+        username: data.username,
+        bannerBackground: data.bannerBackground || "#342B26",
+      });
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
+  };
+
+  const showUserLinks = async (id) => {
+    const res = await getLinksById(id);
+    if (res.status === 200) {
+      const data = await res.json(res);
+
+      const linksArray = Array.isArray(data) ? data : [];
+      const filteredLinks = linksArray.filter((link) => link.type === "links");
+      const filteredShops = linksArray.filter((link) => link.type === "shop");
+
+      setUserData((prev) => ({
+        ...prev,
+        links: filteredLinks,
+        shops: filteredShops,
+      }));
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
+  };
+
+  const handleLinkClick = async (id) => {
+    const res = await updateClick(id);
+    if (res.status == 200) {
+      const data = await res.json(res);
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
+  };
+
   return (
     <div className="mobile-view">
-      <div className="mobile-view-top" style={{ backgroundColor: bannerBackground }}>
+      <div
+        className="mobile-view-top"
+        style={{
+          backgroundColor: username
+            ? bannerBackground
+            : userData.bannerBackground,
+        }}
+      >
         <button className="mobile-share-btn">
           <img
             src={shareProfileIcon}
@@ -24,21 +103,21 @@ const MobileView = ({username, bannerBackground}) => {
           <div className="profile-photo-div">
             <img src={bigProfile} alt="ProfileIcon" />
           </div>
-          <h3 className="mobile-username" style={{
-                  color:
-                    bannerBackground === "#FFFFFF"
-                      ? "black"
-                      : "white",
-                }}>@{username}</h3>
+          <h3
+            className="mobile-username"
+            style={{
+              color: bannerBackground === "#FFFFFF" ? "black" : "white",
+            }}
+          >
+            @{username ? username : userData.username}
+          </h3>
         </div>
       </div>
-      <div className="mobile-view-content">
+      <div className="mobile-view-content hide-scrollbar">
         <div className="link-shop-section">
           <button
             className={
-              activeBtn == "links"
-                ? "mobile-active-btn"
-                : "mobile-link-btn"
+              activeBtn == "links" ? "mobile-active-btn" : "mobile-link-btn"
             }
             onClick={() => setActiveBtn("links")}
           >
@@ -46,45 +125,62 @@ const MobileView = ({username, bannerBackground}) => {
           </button>
           <button
             className={
-              activeBtn == "shop"
-                ? "mobile-active-btn"
-                : "mobile-shop-btn"
+              activeBtn == "shop" ? "mobile-active-btn" : "mobile-shop-btn"
             }
             onClick={() => setActiveBtn("shop")}
           >
             Shop
           </button>
         </div>
-        { activeBtn == "links" ? <div className="show-links">
-          <div className="link">
-            <div className="link-image">
-              <img src={youtubeColor} alt="Youtube" />
-            </div>
-            <h3 className="link-title">Latest YouTube Video</h3>
-          </div>
-          <div className="link">
-            <div className="link-image">
-              <img src={instaColor} alt="Instagram" />
-            </div>
-            <h3 className="link-title">Latest Instagram reel</h3>
-          </div>
-        </div> : <div className="show-shops">
-          <div className="shop">
-            <div className="shop-image">
-              <img src={fbColor} alt="Facebook" />
-            </div>
-            <h3 className="shop-title">Latest Fb Video</h3>
-          </div>
-          <div className="shop">
-            <div className="shop-image">
-              <img src={xColor} alt="X" />
-            </div>
-            <h3 className="shop-title">Latest X reel</h3>
-          </div>
-        </div>}
+        {console.log(userData.links?.length)}
+        {activeBtn == "links"
+          ? (username ? links?.length > 0 : userData?.links?.length > 0) &&
+            (username ? links : userData?.links || []).map((link) => (
+              <div className="show-links" key={link._id}>
+                <div className="link">
+                  <div className="link-image">
+                    <img
+                      src={socialMediaIcons[link.socialMedia]}
+                      alt="Youtube"
+                    />
+                  </div>
+                  <a
+                    className="link-title"
+                    href={link.url}
+                    target="_blank"
+                    onClick={() => handleClick(link._id)}
+                  >
+                    {link.title}
+                  </a>
+                </div>
+              </div>
+            ))
+          : (username ? shops?.length > 0 : userData?.shops?.length > 0) &&
+            (username ? shops : userData?.shops || []).map((link) => (
+              <div className="show-links" key={link._id}>
+                <div className="link">
+                  <div className="link-image">
+                    <img
+                      src={socialMediaIcons[link.socialMedia]}
+                      alt="Youtube"
+                    />
+                  </div>
+                  <a
+                    className="link-title"
+                    href={link.url}
+                    target="_blank"
+                    onClick={() => handleLinkClick(link._id)}
+                  >
+                    {link.title}
+                  </a>
+                </div>
+              </div>
+            ))}
       </div>
       <div className="mobile-view-footer">
-        <button className="get-connected-btn">Get Connected</button>
+        <button className="get-connected-btn" onClick={() => navigate("/")}>
+          Get Connected
+        </button>
         <div className="mobile-footer-logo">
           <img src={blackLogo} alt="Logo" className="mobile-logo" />
           <h2 className="mobile-logo-title">

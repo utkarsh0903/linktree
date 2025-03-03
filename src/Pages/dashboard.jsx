@@ -21,36 +21,58 @@ import { getUser } from "../services";
 
 const Dashboard = () => {
   const [showLogoutBtn, setShowLogoutBtn] = useState(false);
-  //   const [isCreateLinkModalOpen, setIsCreateLinkModalOpen] = useState(false);
-  //   const [newLinkAdded, setNewLinkAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-    const [activeUser, setActiveUser] = useState("");
-    const [username, setUsername] = useState("");
+  const [activeUser, setActiveUser] = useState("");
+  const [username, setUsername] = useState("");
   const [activeTab, setActiveTab] = useState("links");
   const navigate = useNavigate();
 
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-      showUserDetails();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    showUserDetails();
+  }, []);
 
-    }, []);
+  const showUserDetails = async () => {
+    const res = await getUser();
+    if (res.status === 200) {
+      const data = await res.json(res);
+      setIsLoading(false);
+      setActiveUser(data);
+      setUsername(data.username);
+    } else {
+      const data = await res.json(res);
+      alert(data.message);
+    }
+  };
 
-    const showUserDetails = async () => {
-      const res = await getUser();
-      if (res.status === 200) {
-        const data = await res.json(res);
-        setIsLoading(false);
-        setActiveUser(data);
-        setUsername(data.username);
-      } else {
-        const data = await res.json(res);
-        alert(data.message);
-      }
-    };
+  const handleShareBtn = () => {
+    navigator.clipboard.writeText(`http://localhost:5173/${activeUser._id}`);
+  //   toast(
+  //     <div style={{ display: "flex", alignItems: "center" }}>
+  //       <img
+  //         src={blueTick}
+  //         alt="Blue Tick"
+  //         style={{ width: "1em", height: "1em", marginRight: "1em" }}
+  //       />
+  //       <span style={{ color: "#000000" }}>Link Copied!</span>
+  //     </div>,
+  //     {
+  //       duration: 4000,
+  //       position: "bottom-left",
+  //       style: {
+  //         padding: "0.5em",
+  //         border: "1px solid #1B48DA",
+  //         borderRadius: "8px",
+  //         background: "#FFFFFF",
+  //         color: "#000000",
+  //       },
+  //     }
+  //   );
+  }
 
   const handleLogout = () => {
     localStorage.clear("token");
@@ -135,7 +157,11 @@ const Dashboard = () => {
           ) : (
             <div className="current-data">
               <p className="dashboard-username">
-                Hi, <span className="name-highlight">{activeUser.firstname} {activeUser.lastname}</span>!
+                Hi,{" "}
+                <span className="name-highlight">
+                  {activeUser.firstname} {activeUser.lastname}
+                </span>
+                !
               </p>
               <p className="dashboard-message">
                 Congratulations . You got a great response today .{" "}
@@ -146,9 +172,7 @@ const Dashboard = () => {
           {activeTab == "links" && (
             <div className="share-btn">
               <button
-              // onClick={() => {
-              //   setIsCreateLinkModalOpen(true);
-              // }}
+              onClick={() => handleShareBtn()}
               >
                 <img src={shareLink} alt="share link" />
                 Share
@@ -157,8 +181,20 @@ const Dashboard = () => {
           )}
         </div>
         <div className="hero-section">
-          {activeTab == "links" && <Links username={username} setUsername={setUsername} />}
-          {activeTab == "appearance" && <Appearance />}
+          {activeTab == "links" && (
+            <Links
+              username={username}
+              setUsername={setUsername}
+              bannerBackground={activeUser.bannerBackground}
+              bio={activeUser.bio}
+            />
+          )}
+          {activeTab == "appearance" && (
+            <Appearance
+              username={username}
+              bannerBackground={activeUser.bannerBackground}
+            />
+          )}
           {activeTab == "analytics" && <Analytics />}
           {activeTab == "settings" && <Settings />}
         </div>
