@@ -49,6 +49,31 @@ const Dashboard = () => {
     }
   };
 
+  const handleShareBtn = () => {
+    navigator.clipboard.writeText(`http://localhost:5173/${activeUser._id}`);
+  //   toast(
+  //     <div style={{ display: "flex", alignItems: "center" }}>
+  //       <img
+  //         src={blueTick}
+  //         alt="Blue Tick"
+  //         style={{ width: "1em", height: "1em", marginRight: "1em" }}
+  //       />
+  //       <span style={{ color: "#000000" }}>Link Copied!</span>
+  //     </div>,
+  //     {
+  //       duration: 4000,
+  //       position: "bottom-left",
+  //       style: {
+  //         padding: "0.5em",
+  //         border: "1px solid #1B48DA",
+  //         borderRadius: "8px",
+  //         background: "#FFFFFF",
+  //         color: "#000000",
+  //       },
+  //     }
+  //   );
+  }
+
   const handleLogout = () => {
     localStorage.clear("token");
     navigate("/login");
@@ -147,9 +172,7 @@ const Dashboard = () => {
           {activeTab == "links" && (
             <div className="share-btn">
               <button
-              // onClick={() => {
-              //   setIsCreateLinkModalOpen(true);
-              // }}
+              onClick={() => handleShareBtn()}
               >
                 <img src={shareLink} alt="share link" />
                 Share

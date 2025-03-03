@@ -177,6 +177,8 @@
 
 .link-profile-edit {
   margin-left: 5em;
+  height: 82vh;
+  overflow-y: auto;
   .profile-section {
     display: flex;
     flex-direction: column;

@@ -114,7 +114,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
         links={links}
         shops={shops}
       />
-      <div className="link-profile-edit">
+      <div className="link-profile-edit hide-scrollbar">
         <div className="profile-section">
           <h2 className="profile-heading">Profile</h2>
           <div className="profile-edit-info">
@@ -150,7 +150,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
             </div>
           </div>
         </div>
-        <div className="add-link-shop-section">
+        <div className="add-link-shop-section hide-scrollbar">
           <div className="add-link-shop">
             <button
               className={
@@ -225,7 +225,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                 <div className="link-clicks-delete-section">
                   <div className="link-clicks">
                     <img src={clicks} alt="Clicks" />
-                    <p>0 clicks</p>
+                    <p>{link.clicks} clicks</p>
                   </div>
                   <img src={deleteIcon} alt="Delete" />
                 </div>
@@ -274,7 +274,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                 <div className="link-clicks-delete-section">
                   <div className="link-clicks">
                     <img src={clicks} alt="Clicks" />
-                    <p>0 clicks</p>
+                    <p>{link.clicks} clicks</p>
                   </div>
                   <img src={deleteIcon} alt="Delete" />
                 </div>
