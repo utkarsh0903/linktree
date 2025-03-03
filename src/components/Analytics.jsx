@@ -7,56 +7,38 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  Cell,
 } from "recharts";
 import { getLinks } from "../services";
 
 const Analytics = () => {
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
+  // const deviceData = [
+  //   { name: "Linux", deviceClicks: 400 },
+  //   { name: "Mac", deviceClicks: 300 },
+  //   { name: "iOS", deviceClicks: 500 },
+  //   { name: "Windows", deviceClicks: 200 },
+  //   { name: "Android", deviceClicks: 600 },
+  //   { name: "Other", deviceClicks: 800 },
+  // ];
+  const top6LinkData = [
+    { name: "Linux", deviceClicks: 400 },
+    { name: "Mac", deviceClicks: 300 },
+    { name: "iOS", deviceClicks: 500 },
+    { name: "Windows", deviceClicks: 200 },
+    { name: "Android", deviceClicks: 600 },
+    { name: "Other", deviceClicks: 800 },
   ];
   const [userLinks, setUserLinks] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
+  const [deviceData, setDeviceData] = useState([]);
+  const colors = [
+    "#92FFC6",
+    "#9BEBC1",
+    "#165534",
+    "#3EE58F",
+    "#A1D4BA",
+    "#21AF66",
+  ];
 
   useEffect(() => {
     getUserLinks();
@@ -68,6 +50,7 @@ const Analytics = () => {
       const data = await res.json(res);
       setUserLinks(data.links);
       calculateMonthlyClicks(data.links);
+      calculateDeviceClicks(data.links);
     } else {
       const data = await res.json(res);
       alert(data.message);
@@ -112,6 +95,35 @@ const Analytics = () => {
     setMonthlyData(formattedData);
   };
 
+  const calculateDeviceClicks = (links) => {
+    let initialDeviceClicks = {
+      Linux: 0,
+      Mac: 0,
+      iOS: 0,
+      Windows: 0,
+      Android: 0,
+      Other: 0,
+    };
+
+    links.forEach((link) => {
+      if (link.clickData?.deviceClicks) {
+        Object.keys(link.clickData.deviceClicks).forEach((device) => {
+          initialDeviceClicks[device] += link.clickData.deviceClicks[device] || 0;
+        });
+      }
+    });
+
+    console.log(initialDeviceClicks);
+
+    const formattedDeviceData = Object.keys(initialDeviceClicks).map((device) => ({
+      name: device,
+      deviceClicks: initialDeviceClicks[device],
+    }));
+
+    setDeviceData(formattedDeviceData);
+  };
+
+
   return (
     <div className="analytic-container">
       <div className="analytic-top">
@@ -136,22 +148,48 @@ const Analytics = () => {
       </div>
       <div className="clicks-by-months">
         <LineChart width={900} height={300} data={monthlyData}>
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="name" axisLine={false} tickLine={false} />
+          <YAxis axisLine={false} tickLine={false} />
           <Line type="monotone" dataKey="clicks" stroke="#000000" />
         </LineChart>
       </div>
       <div className="clicks-devices-sites">
-        <div className="clicks-devices">
+        <div className="clicks-devices" style={{ width: "100%", height: 300 }}>
+          <h3>Traffic by Device</h3>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart width={150} height={40} data={data}>
-              <Bar dataKey="uv" fill="#8884d8" />
+            <BarChart data={deviceData}>
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis axisLine={false} tickLine={false} />
+              <Bar dataKey="deviceClicks" radius={[5, 5, 0, 0]}>
+                {deviceData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={colors[index % colors.length]}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
         <div className="clicks-sites"></div>
       </div>
-      <div className="clicks-by-links"></div>
+      <div className="clicks-by-links" style={{ width: "100%", height: 300 }}>
+        <h3>Traffic by Links</h3>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={top6LinkData}>
+            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} />
+            <Bar dataKey="deviceClicks" radius={[5, 5, 0, 0]}>
+              {top6LinkData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={colors[index % colors.length]}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

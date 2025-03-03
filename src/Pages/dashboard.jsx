@@ -18,6 +18,7 @@ import Appearance from "../components/Appearance";
 import Analytics from "../components/Analytics";
 import Settings from "../components/Settings";
 import { getUser } from "../services";
+import toast, { Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
   const [showLogoutBtn, setShowLogoutBtn] = useState(false);
@@ -50,28 +51,23 @@ const Dashboard = () => {
   };
 
   const handleShareBtn = () => {
-    navigator.clipboard.writeText(`http://localhost:5173/${activeUser._id}`);
-  //   toast(
-  //     <div style={{ display: "flex", alignItems: "center" }}>
-  //       <img
-  //         src={blueTick}
-  //         alt="Blue Tick"
-  //         style={{ width: "1em", height: "1em", marginRight: "1em" }}
-  //       />
-  //       <span style={{ color: "#000000" }}>Link Copied!</span>
-  //     </div>,
-  //     {
-  //       duration: 4000,
-  //       position: "bottom-left",
-  //       style: {
-  //         padding: "0.5em",
-  //         border: "1px solid #1B48DA",
-  //         borderRadius: "8px",
-  //         background: "#FFFFFF",
-  //         color: "#000000",
-  //       },
-  //     }
-  //   );
+    navigator.clipboard.writeText(`https://linktree-backend-tsgy.onrender.com/api/user/${activeUser._id}`);
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Link Copied!</span>
+      </div>,
+      {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "1px solid #1B48DA",
+          borderRadius: "8px",
+          background: "#FFFFFF",
+          color: "#000000",
+        },
+      }
+    );
   }
 
   const handleLogout = () => {
@@ -199,6 +195,7 @@ const Dashboard = () => {
           {activeTab == "settings" && <Settings />}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

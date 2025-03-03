@@ -73,6 +73,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
   };
 
   const handleLinkClick = async (id) => {
+    console.log(id)
     const res = await updateClick(id);
     if (res.status == 200) {
       const data = await res.json(res);
@@ -92,7 +93,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             : userData.bannerBackground,
         }}
       >
-        <button className="mobile-share-btn">
+        <button className="mobile-share-btn" disabled={username ? true : false} onClick={() => navigate("/")}>
           <img
             src={shareProfileIcon}
             alt="Share Profile"
@@ -132,7 +133,6 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             Shop
           </button>
         </div>
-        {console.log(userData.links?.length)}
         {activeBtn == "links"
           ? (username ? links?.length > 0 : userData?.links?.length > 0) &&
             (username ? links : userData?.links || []).map((link) => (
@@ -148,7 +148,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
                     className="link-title"
                     href={link.url}
                     target="_blank"
-                    onClick={() => handleClick(link._id)}
+                    onClick={() => handleLinkClick(link._id)}
                   >
                     {link.title}
                   </a>
@@ -178,7 +178,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             ))}
       </div>
       <div className="mobile-view-footer">
-        <button className="get-connected-btn" onClick={() => navigate("/")}>
+        <button className="get-connected-btn" onClick={() => navigate("/")} disabled={username ? true : false}>
           Get Connected
         </button>
         <div className="mobile-footer-logo">
