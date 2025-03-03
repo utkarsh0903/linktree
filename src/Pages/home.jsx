@@ -21,8 +21,20 @@ import youtube from "../assets/youtube.png";
 import tiktok from "../assets/tiktok.png";
 import "../styles/home.css";
 import AppInfo from "../components/AppInfo";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
+  const handleSignup = () => {
+    navigate("/register");
+  }
+
+  const handleLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <div className="home-container">
       <div className="top-navbar">
@@ -35,7 +47,7 @@ const Home = () => {
           <img src={marketplace} alt="Marketplace" className="marketplace" />
         </div>
         <div className="home-signup-btn">
-          <button className="signup-btn">Sign up free</button>
+          <button className="signup-btn" onClick={() => handleSignup()}>Sign up free</button>
         </div>
       </div>
       <div className="home-hero-banner">
@@ -47,7 +59,7 @@ const Home = () => {
             Help your followers discover everything you’re sharing all over the
             internet, in one simple place. They’ll thank you for it!
           </h3>
-          <button className="signup-btn free-btn">Get your free Spark</button>
+          <button className="signup-btn free-btn" onClick={() => handleSignup()}>Get your free Spark</button>
         </div>
         <div className="hero-right">
           <img
@@ -224,8 +236,8 @@ const Home = () => {
       <footer className="home-footer">
         <div className="footer-top">
           <div className="forward-btns">
-            <button className="login-btn">Log in</button>
-            <button className="signup-btn footer-signup-btn">Sign up free</button>
+            <button className="login-btn"  onClick={() => handleLogin()}>Log in</button>
+            <button className="signup-btn footer-signup-btn"  onClick={() => handleSignup()}>Sign up free</button>
           </div>
           <div className="footer-menu">
             <nav>
