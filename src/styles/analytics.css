@@ -1,4 +1,144 @@
-.analytic-container{
+.analytic-container {
+  display: flex;
+  flex-direction: column;
+  height: 79vh;
+  overflow-y: scroll;
+  margin-left: 2em;
+  margin-right: 2em;
+  .analytic-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    .analytic-heading {
+      font-family: "Poppins", serif;
+      font-weight: 600;
+      font-size: 1em;
+      color: #000000;
+    }
+    .analytic-calendar {
+      cursor: pointer;
+      height: 3em;
+      background-color: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      padding-left: 0.5em;
+      img {
+        cursor: pointer;
+        height: 1em;
+        width: 1em;
+      }
+      input {
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        width: 8em;
+        &::placeholder {
+          padding-left: 1em;
+          font-family: "Poppins", serif;
+          font-weight: 500;
+          font-size: 0.8em;
+          color: #666666;
+        }
+      }
+      select {
+        cursor: pointer;
+        border: none;
+        margin-right: 1em;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+.show-links-shops-clicks {
+  display: flex;
+  margin-bottom: 2em;
+  .link-clicks,
+  .shop-clicks,
+  .cta-clicks {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    padding-left: 2em;
+    background-color: #22d679;
+    border-radius: 10px;
+    width: 30%;
+    height: 6em;
+    margin-right: 2em;
+    h4 {
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.9em;
+      color: #ffffff;
+      margin-bottom: 0.3em;
+    }
+    p {
+      color: #f4f4f4;
+      font-family: "Poppins", serif;
+      font-weight: 600;
+      font-size: 1.5em;
+    }
+  }
+  .shop-clicks,
+  .cta-clicks {
+    background-color: #dcffeb;
+    h4 {
+      color: #000000;
+    }
+    p {
+      color: #1c1c1c;
+    }
+  }
+}
+
+.clicks-by-months {
+  background-color: #ffffff;
+  border-radius: 10px;
+  .month-click-chart {
+    margin-top: 2em;
+  }
+}
+
+.clicks-devices-sites {
+  display: flex;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  width: 100%;
+  .clicks-devices,
+  .clicks-sites {
+    background-color: #ffffff;
+    border-radius: 10px;
+    h3 {
+      margin-top: 1em;
+      margin-left: 2em;
+      margin-bottom: 1.4em;
+      color: #000000;
+      font-family: "Poppins", serif;
+      font-weight: 600;
+      font-size: 1em;
+    }
+  }
+  .clicks-sites {
+    margin-left: 2em;
+  }
+}
+
+.clicks-by-links {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding-bottom: 2em;
+  h3 {
+    padding-left: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-size: 1em;
+    color: #000000;
+  }
 }
