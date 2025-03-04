@@ -34,16 +34,20 @@ const Register = () => {
       alert(data.message);
       navigate("/login");
       setRegisterData({
-        username: "",
+        firstname: "",
+        lastname: "",
         email: "",
-        mobile: "",
         password: "",
         confirmPassword: "",
       });
     } else {
       const data = await res.json(res);
       const errorMap = {};
-      errorMap[data.errorType] = data.message;
+      if (data.errorType) {
+        errorMap[data.errorType] = data.message;
+      } else {
+        alert(data.message);
+      }
 
       setErrors(errorMap);
     }
