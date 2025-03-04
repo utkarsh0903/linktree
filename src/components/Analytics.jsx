@@ -8,29 +8,28 @@ import {
   BarChart,
   Bar,
   Cell,
+  PieChart,
+  Pie,
+  Tooltip,
+  Legend,
 } from "recharts";
 import { getLinks } from "../services";
+import "../styles/analytics.css";
 
 const Analytics = () => {
-  // const deviceData = [
-  //   { name: "Linux", deviceClicks: 400 },
-  //   { name: "Mac", deviceClicks: 300 },
-  //   { name: "iOS", deviceClicks: 500 },
-  //   { name: "Windows", deviceClicks: 200 },
-  //   { name: "Android", deviceClicks: 600 },
-  //   { name: "Other", deviceClicks: 800 },
+  // const data = [
+  //   { name: "Group A", value: 400 },
+  //   { name: "Group B", value: 300 },
+  //   { name: "Group C", value: 300 },
+  //   { name: "Group D", value: 200 },
   // ];
-  const top6LinkData = [
-    { name: "Linux", deviceClicks: 400 },
-    { name: "Mac", deviceClicks: 300 },
-    { name: "iOS", deviceClicks: 500 },
-    { name: "Windows", deviceClicks: 200 },
-    { name: "Android", deviceClicks: 600 },
-    { name: "Other", deviceClicks: 800 },
-  ];
+  const COLORS = ["#165534", "#21AF66", "#94E9B8", "#3EE58F"];
+
   const [userLinks, setUserLinks] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [deviceData, setDeviceData] = useState([]);
+  const [socialMediaData, setSocialMediaData] = useState([]);
+  const [top6LinkData, setTop6LinkData] = useState([]);
   const colors = [
     "#92FFC6",
     "#9BEBC1",
@@ -48,9 +47,12 @@ const Analytics = () => {
     const res = await getLinks();
     if (res.status === 200) {
       const data = await res.json(res);
+      console.log(data.links);
       setUserLinks(data.links);
       calculateMonthlyClicks(data.links);
       calculateDeviceClicks(data.links);
+      calculateTopLinks(data.links);
+      calculateSocialMediaClicks(data.links);
     } else {
       const data = await res.json(res);
       alert(data.message);
@@ -108,21 +110,64 @@ const Analytics = () => {
     links.forEach((link) => {
       if (link.clickData?.deviceClicks) {
         Object.keys(link.clickData.deviceClicks).forEach((device) => {
-          initialDeviceClicks[device] += link.clickData.deviceClicks[device] || 0;
+          initialDeviceClicks[device] +=
+            link.clickData.deviceClicks[device] || 0;
         });
       }
     });
 
-    console.log(initialDeviceClicks);
-
-    const formattedDeviceData = Object.keys(initialDeviceClicks).map((device) => ({
+    const finalDeviceData = Object.keys(initialDeviceClicks).map((device) => ({
       name: device,
       deviceClicks: initialDeviceClicks[device],
     }));
 
-    setDeviceData(formattedDeviceData);
+    setDeviceData(finalDeviceData);
   };
 
+  const calculateSocialMediaClicks = (links) => {
+    let initialsocialMediaClicks = {
+      YouTube: 0,
+      Facebook: 0,
+      Instagram: 0,
+      Others: 0,
+    };
+
+    links.forEach((link) => {
+      const platform = link?.socialMedia;
+      const clicks = link.clicks || 0;
+  
+      if (platform === "yt") {
+        initialsocialMediaClicks.YouTube += clicks;
+      } else if (platform === "fb") {
+        initialsocialMediaClicks.Facebook += clicks;
+      } else if (platform === "insta") {
+        initialsocialMediaClicks.Instagram += clicks;
+      } else {
+        initialsocialMediaClicks.Others += clicks;
+      }
+    });
+  
+    const finalData = Object.keys(initialsocialMediaClicks).map((platform) => ({
+      name: platform,
+      value: initialsocialMediaClicks[platform],
+    }));
+
+    setSocialMediaData(finalData);
+  };
+
+
+  const calculateTopLinks = (links) => {
+    const sortedLinks = [...links]
+      .sort((a, b) => (b.clicks || 0) - (a.clicks || 0))
+      .slice(0, 6);
+
+    const finalTopLinks = sortedLinks.map((link) => ({
+      name: link.title,
+      clicks: link.clicks || 0,
+    }));
+
+    setTop6LinkData(finalTopLinks);
+  };
 
   return (
     <div className="analytic-container">
@@ -171,7 +216,36 @@ const Analytics = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="clicks-sites"></div>
+        <div className="clicks-sites">
+          <h3>Sites</h3>
+          <PieChart width={400} height={400}>
+            <Pie
+              data={socialMediaData}
+              cx={120}
+              cy={200}
+              innerRadius={60}
+              outerRadius={80}
+              fill="#8884d8"
+              paddingAngle={5}
+              dataKey="value"
+              // label={({ name, value }) => `${name}: ${value}`}
+            >
+              {socialMediaData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend
+            content={showChartData}
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
+            />
+          </PieChart>
+        </div>
       </div>
       <div className="clicks-by-links" style={{ width: "100%", height: 300 }}>
         <h3>Traffic by Links</h3>
@@ -179,7 +253,7 @@ const Analytics = () => {
           <BarChart data={top6LinkData}>
             <XAxis dataKey="name" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
-            <Bar dataKey="deviceClicks" radius={[5, 5, 0, 0]}>
+            <Bar dataKey="clicks" radius={[5, 5, 0, 0]}>
               {top6LinkData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -195,3 +269,25 @@ const Analytics = () => {
 };
 
 export default Analytics;
+
+const showChartData = (props) => {
+  const { payload } = props;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", paddingLeft: 20 }}>
+      {payload.map((entry, index) => (
+        <div key={`item-${index}`} style={{ display: "flex", alignItems: "center", marginBottom: 5 }}>
+          <div
+            style={{
+              width: 10,
+              height: 10,
+              backgroundColor: entry.color,
+              marginRight: 8,
+              borderRadius: 10,
+            }}
+          ></div>
+          <p>{entry.value}: <span style={{marginLeft: 10}}>{entry.payload.value}</span></p>
+        </div>
+      ))}
+    </div>
+  );
+};

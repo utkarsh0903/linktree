@@ -51,7 +51,7 @@ const Dashboard = () => {
   };
 
   const handleShareBtn = () => {
-    navigator.clipboard.writeText(`https://linktree-backend-tsgy.onrender.com/api/user/${activeUser._id}`);
+    navigator.clipboard.writeText(`https://linktree-orpin-five.vercel.app/${activeUser._id}`);
     toast(
       <div style={{ display: "flex", alignItems: "center" }}>
         <span style={{ color: "#000000" }}>Link Copied!</span>

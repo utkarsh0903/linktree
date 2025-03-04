@@ -9,6 +9,7 @@ import xColor from "../assets/xColor.png";
 import "../styles/links.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { getLinksById, getUserById, updateClick } from "../services";
+import toast, { Toaster } from "react-hot-toast";
 
 const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
   const [activeBtn, setActiveBtn] = useState("links");
@@ -83,6 +84,26 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
     }
   };
 
+  const handleShareProfile = () => {
+    navigator.clipboard.writeText(`https://linktree-orpin-five.vercel.app/${id}`);
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Link Copied!</span>
+      </div>,
+      {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "1px solid #1B48DA",
+          borderRadius: "8px",
+          background: "#FFFFFF",
+          color: "#000000",
+        },
+      }
+    );
+  }
+
   return (
     <div className="mobile-view">
       <div
@@ -93,7 +114,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             : userData.bannerBackground,
         }}
       >
-        <button className="mobile-share-btn" disabled={username ? true : false} onClick={() => navigate("/")}>
+        <button className="mobile-share-btn" disabled={username ? true : false} onClick={() => handleShareProfile()}>
           <img
             src={shareProfileIcon}
             alt="Share Profile"
@@ -188,6 +209,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
           </h2>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

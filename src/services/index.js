@@ -1,5 +1,5 @@
-const URL = "http://localhost:9000/api";
-// const URL = "https://linktree-backend-tsgy.onrender.com/api";
+// const URL = "http://localhost:9000/api";
+const URL = "https://linktree-backend-tsgy.onrender.com/api";
 
 export const register = (data) => {
   return fetch(`${URL}/user/register`, {
