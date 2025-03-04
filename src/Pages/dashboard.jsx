@@ -73,6 +73,22 @@ const Dashboard = () => {
   const handleLogout = () => {
     localStorage.clear("token");
     navigate("/login");
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Logged out successfully!!</span>
+      </div>,
+      {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "none",
+          borderRadius: "8px",
+          background: "#05A763",
+          color: "#000000",
+        },
+      }
+    );
   };
 
   return (

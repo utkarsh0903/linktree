@@ -82,6 +82,7 @@ const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
       const data = await res.json(res);
       toast(
         <div style={{ display: "flex", alignItems: "center" }}>
+          {console.log(data.message)};
           <span style={{ color: "#000000" }}>{data.message}</span>
         </div>,
         {
