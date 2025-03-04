@@ -126,7 +126,6 @@ const Category = () => {
                 }`}
                 onClick={() => handleCategory(category.name)}
               >
-                {console.log(selectedCategory)}
                 <img src={category.image} alt={category.name} />
                 <p>{category.name}</p>
               </div>
