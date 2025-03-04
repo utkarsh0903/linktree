@@ -192,7 +192,7 @@ const Dashboard = () => {
             />
           )}
           {activeTab == "analytics" && <Analytics />}
-          {activeTab == "settings" && <Settings activeUser={activeUser} />}
+          {activeTab == "settings" && <Settings activeUser={activeUser} setActiveUser={setActiveUser} />}
         </div>
       </div>
       <Toaster />

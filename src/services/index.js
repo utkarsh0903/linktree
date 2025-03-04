@@ -1,5 +1,5 @@
-// const URL = "http://localhost:9000/api";
-const URL = "https://linktree-backend-tsgy.onrender.com/api";
+const URL = "http://localhost:9000/api";
+// const URL = "https://linktree-backend-tsgy.onrender.com/api";
 
 export const register = (data) => {
   return fetch(`${URL}/user/register`, {
@@ -44,6 +44,17 @@ export const getUser = () => {
 
 export const updateProfile = (data) => {
   return fetch(`${URL}/user/update-profile`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+export const updateUser = (data) => {
+  return fetch(`${URL}/user/update-user-info`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
