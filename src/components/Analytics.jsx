@@ -178,7 +178,7 @@ const Analytics = () => {
         </div>
         <div className="cta-clicks">
           <h4>CTA</h4>
-          <p>156</p>
+          <p>5</p>
         </div>
       </div>
       <div className="clicks-by-months">
