@@ -5,6 +5,7 @@ import { login } from "../services";
 import { Link, useNavigate } from "react-router-dom";
 import greenLogo from "../assets/greenLogo.png";
 import halfBg from "../assets/halfBg.png";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,7 +29,22 @@ const Login = () => {
     if (res.status === 200) {
       const data = await res.json(res.token);
       localStorage.setItem("token", data.token);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
       navigate("/category");
       setLoginData({
         email: "",
@@ -40,7 +56,22 @@ const Login = () => {
       if (data.errorType) {
         errorMap[data.errorType] = data.message;
       } else {
-        alert(data.message);
+        toast(
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ color: "#000000" }}>{data.message}</span>
+          </div>,
+          {
+            duration: 2000,
+            position: "top-center",
+            style: {
+              padding: "0.5em",
+              border: "none",
+              borderRadius: "8px",
+              background: "#FF003D",
+              color: "#000000",
+            },
+          }
+        );
       }
 
       setErrors(errorMap);

@@ -15,6 +15,7 @@ import health from "../assets/health.png";
 import other from "../assets/other.png";
 import tech from "../assets/tech.png";
 import tourism from "../assets/tourism.png";
+import toast from "react-hot-toast";
 
 const Category = () => {
   const [username, setUsername] = useState("");
@@ -77,7 +78,22 @@ const Category = () => {
     const res = await addUsername(username);
     if (res.status === 200) {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
       navigate("/dashboard");
       setUsername("");
     } else {
@@ -85,7 +101,22 @@ const Category = () => {
       if (data.errorType === "username") {
         setUsernameError(data.message);
       } else {
-        alert(data.message);
+        toast(
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ color: "#000000" }}>{data.message}</span>
+          </div>,
+          {
+            duration: 2000,
+            position: "top-center",
+            style: {
+              padding: "0.5em",
+              border: "none",
+              borderRadius: "8px",
+              background: "#FF003D",
+              color: "#000000",
+            },
+          }
+        );
       }
     }
   };

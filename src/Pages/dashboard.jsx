@@ -54,16 +54,16 @@ const Dashboard = () => {
     navigator.clipboard.writeText(`https://linktree-orpin-five.vercel.app/${activeUser._id}`);
     toast(
       <div style={{ display: "flex", alignItems: "center" }}>
-        <span style={{ color: "#000000" }}>Link Copied!</span>
+        <span style={{ color: "#000000" }}>Copied to clipboard</span>
       </div>,
       {
         duration: 4000,
         position: "top-center",
         style: {
           padding: "0.5em",
-          border: "1px solid #1B48DA",
+          border: "none",
           borderRadius: "8px",
-          background: "#FFFFFF",
+          background: "#05A763",
           color: "#000000",
         },
       }
@@ -195,7 +195,6 @@ const Dashboard = () => {
           {activeTab == "settings" && <Settings activeUser={activeUser} setActiveUser={setActiveUser} />}
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

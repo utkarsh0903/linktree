@@ -1,4 +1,5 @@
 
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import MobileView from "./components/MobileView.jsx";
 import Category from "./Pages/category.jsx";
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Toaster />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />

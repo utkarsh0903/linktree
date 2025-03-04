@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/settings.css";
 import { updateUser } from "../services";
+import toast from "react-hot-toast";
 
 const Settings = ({ activeUser, setActiveUser }) => {
   const [userDetails, setUserDetails] = useState(activeUser);
@@ -34,14 +35,44 @@ const Settings = ({ activeUser, setActiveUser }) => {
     }
 
     if (Object.keys(updatedFields).length === 0) {
-      alert("No changes detected.");
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>No Changes detected</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
       setErrors({});
       return;
     }
     const res = await updateUser(updatedFields);
     if (res.status === 200) {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
       setActiveUser(userDetails);
       setUpdatedFields({});
       setErrors({});

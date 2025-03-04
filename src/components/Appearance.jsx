@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MobileView from "./MobileView";
 import { getLinks } from "../services/index.js";
 import "../styles/appearance.css";
+import toast from "react-hot-toast";
 
 const Appearance = ({ username, bannerBackground }) => {
   const [userLinks, setUserLinks] = useState([]);
@@ -19,6 +20,25 @@ const Appearance = ({ username, bannerBackground }) => {
       alert(data.message);
     }
   };
+
+  const handleSave = (e) => {
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>failed to save</span>
+      </div>,
+      {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "none",
+          borderRadius: "8px",
+          background: "#FF003D",
+          color: "#000000",
+        },
+      }
+    );
+  }
 
   const links = userLinks.filter((link) => link.type === "links");
   const shops = userLinks.filter((link) => link.type === "shop");

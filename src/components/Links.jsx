@@ -13,6 +13,7 @@ import bigProfile from "../assets/bigProfile.png";
 import MobileView from "./MobileView";
 import { getLinks, updateProfile } from "../services";
 import AddLink from "./AddLink";
+import toast from "react-hot-toast";
 
 const Links = ({ username, setUsername, bannerBackground, bio }) => {
   const [activeBtn, setActiveBtn] = useState("links");
@@ -44,7 +45,22 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
       setUserLinks(data.links);
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#FF003D",
+            color: "#000000",
+          },
+        }
+      );
     }
   };
 
@@ -82,19 +98,63 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
 
   const handleSave = async (e) => {
     if (!username.trim()) {
-      alert("Username cannot be empty!");
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>Username cannot be empty!</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#FF003D",
+            color: "#000000",
+          },
+        }
+      );
       return;
     }
     setLoading(true);
     e.preventDefault();
-    console.log(updatedData);
     const res = await updateProfile(updatedData);
     if (res.status === 200) {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#FF003D",
+            color: "#000000",
+          },
+        }
+      );
     }
     setLoading(false);
   };
@@ -102,6 +162,26 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
   const handleAddLinkBtn = () => {
     setIsAddLinkModalOpen(true);
   };
+
+  const handleEditLinkBtn = () => {
+    
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Something went wrong</span>
+      </div>,
+      {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "none",
+          borderRadius: "8px",
+          background: "#FF003D",
+          color: "#000000",
+        },
+      }
+    );
+  }
 
   const links = userLinks.filter((link) => link.type === "links");
   const shops = userLinks.filter((link) => link.type === "shop");
@@ -123,8 +203,8 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                 <img src={bigProfile} alt="ProfileIcon" />
               </div>
               <div className="choose-image-div">
-                <button className="pick-an-image">Pick an image</button>
-                <button className="remove-image">Remove</button>
+                <button className="pick-an-image" onClick={() => handleEditLinkBtn()}>Pick an image</button>
+                <button className="remove-image" onClick={() => handleEditLinkBtn()}>Remove</button>
               </div>
             </div>
             <div className="edit-profile-title">
@@ -197,7 +277,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                     <div className="link-name">
                       <div className="link-flex" >
                         <p>{link.title}</p>
-                        <img src={editIcon} alt="Edit" />
+                        <img src={editIcon} alt="Edit" onClick={() => handleEditLinkBtn()} />
                       </div>
                       <div className="link-expiry-slider">
                         <div className="link-slider">
@@ -217,7 +297,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                     </div>
                     <div className="link-url">
                       <p>{link.url}</p>
-                      <img src={editIcon} alt="Edit" />
+                      <img src={editIcon} alt="Edit" onClick={() => handleEditLinkBtn()} />
                     </div>
                   </div>
                   <div className="link-active"></div>
@@ -227,7 +307,7 @@ const Links = ({ username, setUsername, bannerBackground, bio }) => {
                     <img src={clicks} alt="Clicks" />
                     <p>{link.clicks} clicks</p>
                   </div>
-                  <img src={deleteIcon} alt="Delete" />
+                  <img src={deleteIcon} alt="Delete" onClick={() => handleEditLinkBtn()} />
                 </div>
               </div>
             </div>
