@@ -37,7 +37,11 @@ const Login = () => {
     } else {
       const data = await res.json(res);
       const errorMap = {};
-      errorMap[data.errorType] = data.message;
+      if (data.errorType) {
+        errorMap[data.errorType] = data.message;
+      } else {
+        alert(data.message);
+      }
 
       setErrors(errorMap);
     }
@@ -70,9 +74,7 @@ const Login = () => {
               }
               placeholder="Spark/Username"
             />
-            {errors.email && (
-              <p className="error-message">{errors.email}</p>
-            )}
+            {errors.email && <p className="error-message">{errors.email}</p>}
             <input
               type="password"
               name="password"
