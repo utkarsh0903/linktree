@@ -10,6 +10,7 @@ import youtubeColor from "../assets/youtubeColor.png";
 import xColor from "../assets/xColor.png";
 import "../styles/addlink.css";
 import { addLinks } from "../services";
+import toast from "react-hot-toast";
 
 const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
   const [activeBtn, setActiveBtn] = useState("links");
@@ -60,14 +61,63 @@ const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
     const res = await addLinks(addLinkData);
     if (res.status === 200) {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#05A763",
+            color: "#000000",
+          },
+        }
+      );
       setIsLinkAdded(true);
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      toast(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ color: "#000000" }}>{data.message}</span>
+        </div>,
+        {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "8px",
+            background: "#FF003D",
+            color: "#000000",
+          },
+        }
+      );
     }
     setIsAddLinkModalOpen(false);
   };
+
+  const handleEditBtn = () => {
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Something went wrong</span>
+      </div>,
+      {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "none",
+          borderRadius: "8px",
+          background: "#FF003D",
+          color: "#000000",
+        },
+      }
+    );
+  }
 
   return (
     <div className="overlay">
@@ -108,7 +158,7 @@ const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
                     value={addLinkData.title}
                     onChange={(e) => handleInputChange(e)}
                   />
-                  <img src={editIcon} alt="Edit" />
+                  <img src={editIcon} alt="Edit" onClick={() => handleEditBtn()} />
                 </div>
                 <div className="link-expiry-slider">
                   <div className="link-slider">
@@ -135,11 +185,11 @@ const AddLink = ({ setIsAddLinkModalOpen, setIsLinkAdded }) => {
                     value={addLinkData.url}
                     onChange={handleInputChange}
                   />
-                  <img src={editIcon} alt="Edit" />
+                  <img src={editIcon} alt="Edit" onClick={() => handleEditBtn()} />
                 </div>
                 <div className="copy-delete-icons">
-                  <img src={copyIcon} alt="Copy" />
-                  <img src={deleteIcon} alt="Delete" />
+                  <img src={copyIcon} alt="Copy" onClick={() => handleEditBtn()} />
+                  <img src={deleteIcon} alt="Delete" onClick={() => handleEditBtn()} />
                 </div>
               </div>
             </div>
