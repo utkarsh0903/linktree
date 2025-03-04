@@ -9,6 +9,7 @@ import xColor from "../assets/xColor.png";
 import "../styles/links.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { getLinksById, getUserById, updateClick } from "../services";
+import toast, { Toaster } from "react-hot-toast";
 
 const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
   const [activeBtn, setActiveBtn] = useState("links");
@@ -73,6 +74,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
   };
 
   const handleLinkClick = async (id) => {
+    console.log(id)
     const res = await updateClick(id);
     if (res.status == 200) {
       const data = await res.json(res);
@@ -81,6 +83,26 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
       alert(data.message);
     }
   };
+
+  const handleShareProfile = () => {
+    navigator.clipboard.writeText(`https://linktree-orpin-five.vercel.app/${id}`);
+    toast(
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ color: "#000000" }}>Link Copied!</span>
+      </div>,
+      {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          padding: "0.5em",
+          border: "1px solid #1B48DA",
+          borderRadius: "8px",
+          background: "#FFFFFF",
+          color: "#000000",
+        },
+      }
+    );
+  }
 
   return (
     <div className="mobile-view">
@@ -92,7 +114,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             : userData.bannerBackground,
         }}
       >
-        <button className="mobile-share-btn">
+        <button className="mobile-share-btn" disabled={username ? true : false} onClick={() => handleShareProfile()}>
           <img
             src={shareProfileIcon}
             alt="Share Profile"
@@ -132,7 +154,6 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             Shop
           </button>
         </div>
-        {console.log(userData.links?.length)}
         {activeBtn == "links"
           ? (username ? links?.length > 0 : userData?.links?.length > 0) &&
             (username ? links : userData?.links || []).map((link) => (
@@ -148,7 +169,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
                     className="link-title"
                     href={link.url}
                     target="_blank"
-                    onClick={() => handleClick(link._id)}
+                    onClick={() => handleLinkClick(link._id)}
                   >
                     {link.title}
                   </a>
@@ -178,7 +199,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
             ))}
       </div>
       <div className="mobile-view-footer">
-        <button className="get-connected-btn" onClick={() => navigate("/")}>
+        <button className="get-connected-btn" onClick={() => navigate("/")} disabled={username ? true : false}>
           Get Connected
         </button>
         <div className="mobile-footer-logo">
@@ -188,6 +209,7 @@ const MobileView = ({ username, bannerBackground, links = [], shops = [] }) => {
           </h2>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
