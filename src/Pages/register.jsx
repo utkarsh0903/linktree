@@ -23,9 +23,11 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setErrors({});
     const res = await register(registerData);
     if (res.status === 200) {
       const data = await res.json(res);
@@ -40,7 +42,10 @@ const Register = () => {
       });
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      const errorMap = {};
+      errorMap[data.errorType] = data.message;
+
+      setErrors(errorMap);
     }
   };
 
@@ -80,8 +85,10 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              // required
             />
+            {errors.firstname && (
+              <p className="error-message">{errors.firstname}</p>
+            )}
             <label className="lastname-section" htmlFor="lastname">
               Last name
             </label>
@@ -95,8 +102,10 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              // required
             />
+            {errors.lastname && (
+              <p className="error-message">{errors.lastname}</p>
+            )}
             <label className="email-section" htmlFor="email">
               Email
             </label>
@@ -110,8 +119,10 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              // required
             />
+            {errors.email && (
+              <p className="error-message">{errors.email}</p>
+            )}
             <label className="password-section" htmlFor="password">
               Password
             </label>
@@ -125,8 +136,10 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              // required
             />
+            {errors.password && (
+              <p className="error-message password hide-scrollbar">{errors.password}</p>
+            )}
             <label
               className="confirm-password-section"
               htmlFor="confirmPassword"
@@ -143,8 +156,10 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              // required
             />
+            {errors.confirmPassword && (
+              <p className="error-message">{errors.confirmPassword}</p>
+            )}
             <div className="checkbox-div">
               <input type="checkbox" />
               <p>
