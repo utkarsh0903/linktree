@@ -1,0 +1,171 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.register-container {
+  display: flex;
+  width: 100%;
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+    margin-top: 1em;
+    height: 99.36vh;
+    .login-logo {
+      display: flex;
+      align-items: center;
+      .logo {
+        width: 1.5em;
+        height: 1.5em;
+      }
+      .logo-title {
+        font-family: "Plus Jakarta Sans", serif;
+        font-weight: 800;
+        font-size: 1em;
+        line-height: 30.24px;
+        letter-spacing: 0%;
+        color: #000000;
+        margin-left: 0.3em;
+        sup {
+          font-family: "Plus Jakarta Sans", serif;
+          font-weight: 800;
+          line-height: 30.24px;
+          letter-spacing: 0%;
+          color: #000000;
+          font-size: 0.1em;
+          position: relative;
+          top: -2em;
+          margin-left: 0.4em;
+        }
+      }
+    }
+  }
+  .right-container {
+    width: 39%;
+    img {
+      width: 100%;
+      height: 99.36vh;
+    }
+  }
+}
+
+.register-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .register-heading {
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+    h1 {
+      font-family: "Poppins", serif;
+      font-weight: 800;
+      font-size: 2.5em;
+      letter-spacing: -2px;
+      color: #000000;
+      text-align: center;
+    }
+  }
+  .top-content {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    h2 {
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.9em;
+      letter-spacing: 0%;
+      color: #333333;
+    }
+    .login-btn {
+      background-color: transparent;
+      border: none;
+      text-decoration: underline;
+      color: #28a263;
+      font-family: "Poppins", serif;
+      font-weight: 400;
+      font-size: 0.7em;
+
+      .login-link {
+        color: #28a263;
+      }
+    }
+  }
+  .register-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0.5em;
+    width: 50%;
+    label {
+      font-family: "Poppins", serif;
+      font-weight: 400;
+      font-size: 0.8em;
+      color: #666666;
+    }
+    input {
+      border: 0.7px solid #66666659;
+      background-color: #fff;
+      border-radius: 10px;
+      width: 100%;
+      height: 2em;
+      margin-bottom: 0.5em;
+      padding-left: 0.5em;
+      &::placeholder {
+        font-family: "Poppins", serif;
+        font-weight: 400;
+        font-size: 0.9em;
+        color: #666666;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    .checkbox-div {
+      width: 100%;
+      display: flex;
+      margin-top: 0.2em;
+      margin-bottom: 0.2em;
+      input {
+        height: 1em;
+        width: 10%;
+        color: #000000;
+      }
+      p {
+        font-family: "Poppins", serif;
+        font-weight: 400;
+        font-size: 0.7em;
+        span {
+          text-decoration: underline;
+        }
+      }
+    }
+    .register-btn {
+      width: 100%;
+      height: 2em;
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.9em;
+      text-align: center;
+      background-color: #c8bfbfdc;
+      color: #ffffff;
+    }
+  }
+  .login-request {
+    margin-top: 1em;
+    width: 70%;
+    p {
+      font-family: "Inter", serif;
+      font-weight: 400;
+      font-size: 0.8em;
+      line-height: 18px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #676B5F;
+      span{
+        text-decoration: underline;
+      }
+    }
+  }
+}
