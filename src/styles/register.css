@@ -1,0 +1,325 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.register-container,
+.login-container,
+.category-container {
+  display: flex;
+  width: 100%;
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 65%;
+    .login-logo {
+      display: flex;
+      align-items: center;
+      .logo {
+        width: 1.5em;
+        height: 1.5em;
+      }
+      .logo-title {
+        font-family: "Plus Jakarta Sans", serif;
+        font-weight: 800;
+        font-size: 1em;
+        line-height: 30.24px;
+        letter-spacing: 0%;
+        color: #000000;
+        margin-left: 0.3em;
+        sup {
+          font-family: "Plus Jakarta Sans", serif;
+          font-weight: 800;
+          line-height: 30.24px;
+          letter-spacing: 0%;
+          color: #000000;
+          font-size: 0.1em;
+          position: relative;
+          top: -2em;
+          margin-left: 0.4em;
+        }
+      }
+    }
+  }
+  .right-container {
+    width: 59%;
+    img {
+      object-fit: fill;
+      width: 100%;
+      height: 99.36vh;
+    }
+  }
+}
+
+.register-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .register-heading {
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+    h1 {
+      font-family: "Poppins", serif;
+      font-weight: 800;
+      font-size: 2.5em;
+      letter-spacing: -2px;
+      color: #000000;
+      text-align: center;
+    }
+  }
+  .top-content {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    h2 {
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.9em;
+      letter-spacing: 0%;
+      color: #333333;
+    }
+    .login-btn {
+      background-color: transparent;
+      border: none;
+      text-decoration: underline;
+      color: #28a263;
+      font-family: "Poppins", serif;
+      font-weight: 400;
+      font-size: 0.7em;
+
+      .login-link {
+        color: #28a263;
+      }
+    }
+  }
+  .register-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0.5em;
+    width: 50%;
+    label {
+      font-family: "Poppins", serif;
+      font-weight: 400;
+      font-size: 0.8em;
+      color: #666666;
+    }
+    input {
+      border: 0.7px solid #66666659;
+      background-color: #fff;
+      border-radius: 10px;
+      width: 100%;
+      height: 2em;
+      margin-bottom: 0.5em;
+      padding-left: 0.5em;
+      &::placeholder {
+        font-family: "Poppins", serif;
+        font-weight: 400;
+        font-size: 0.9em;
+        color: #666666;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    .checkbox-div {
+      width: 100%;
+      display: flex;
+      margin-top: 0.2em;
+      margin-bottom: 0.2em;
+      input {
+        height: 1em;
+        width: 10%;
+        color: #000000;
+      }
+      p {
+        font-family: "Poppins", serif;
+        font-weight: 400;
+        font-size: 0.7em;
+        span {
+          text-decoration: underline;
+        }
+      }
+    }
+    .register-btn {
+      width: 100%;
+      height: 2em;
+      font-family: "Poppins", serif;
+      font-weight: 500;
+      font-size: 0.9em;
+      text-align: center;
+      background-color: #c8bfbfdc;
+      color: #ffffff;
+    }
+  }
+  .login-request {
+    margin-top: 1em;
+    width: 90%;
+    p {
+      font-family: "Inter", serif;
+      font-weight: 400;
+      font-size: 0.8em;
+      line-height: 18px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #676b5f;
+      span {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.password {
+  font-size: 0.5em;
+  width: 100%;
+  overflow-y: scroll;
+  height: 2.9em;
+}
+
+.login-data {
+  margin-top: 3em;
+  height: 40vh;
+  input {
+    background-color: #eff0ec !important;
+    border: none !important;
+    height: 3em !important;
+    margin-bottom: 1em !important;
+    &::placeholder {
+      font-family: "Inter", serif;
+      font-weight: 400;
+      font-size: 1em;
+      line-height: 21px;
+      letter-spacing: 0%;
+      color: #676b5f;
+    }
+  }
+  .error-message {
+    margin-bottom: 1em;
+  }
+  .login-btn {
+    width: 100%;
+    height: 2em;
+    font-family: "Inter", serif;
+    font-weight: 600;
+    font-size: 1em;
+    line-height: 24px;
+    letter-spacing: -0.32px;
+    text-align: center;
+
+    background-color: #e0e2d9;
+    color: #a8aaa2;
+  }
+}
+
+.forget-password {
+  font-family: "Inter", serif;
+  font-weight: 400;
+  font-size: 0.9em;
+  line-height: 21px;
+  text-decoration: underline;
+  color: #28a263;
+  margin-bottom: 2em;
+}
+
+.signup-request {
+  font-family: "Inter", serif;
+  font-weight: 400;
+  font-size: 0.8em;
+  margin-bottom: 4em;
+  .register-link {
+    text-decoration: underline;
+    color: #28a263;
+  }
+}
+
+.category-content {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-left: 4em;
+  .category-heading {
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+    h1 {
+      font-family: "Inter", serif;
+      font-weight: 800;
+      font-size: 2.5em;
+      letter-spacing: -2px;
+      color: #000000;
+    }
+  }
+  .category-subheading {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    font-family: "Inter", serif;
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 24px;
+    letter-spacing: -0.32px;
+    color: #676b5f;
+  }
+  input {
+    background-color: #f6f7f5;
+    border: none;
+    height: 4em;
+    border-radius: 10px;
+    padding-left: 1em;
+    margin-bottom: 1em;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      font-family: "Inter", serif;
+      font-weight: 400;
+      font-size: 1em;
+    }
+  }
+  .select-category {
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
+  .category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    .category-item {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e0e2d9;
+      background-color: #ffffff;
+      border-radius: 30px;
+      height: 2em;
+      margin-right: 0.5em;
+      padding-right: 1em;
+      padding-left: 1em;
+      min-width: 7em;
+      margin-bottom: 0.7em;
+      img {
+        height: 0.8em;
+        width: 0.8em;
+        margin-right: 0.3em;
+      }
+      p {
+        font-family: "Inter", serif;
+        font-weight: 400;
+        font-size: 1em;
+      }
+    }
+  }
+  .continue-btn{
+    width: 100%;
+  }
+}
+
+.selected {
+  background-color: #28a263 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #252523 !important;
+}

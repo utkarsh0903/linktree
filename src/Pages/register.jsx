@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
-// import "../styles/register.css";
+import "../styles/register.css";
 import { register } from "../services/index";
 import { Link, useNavigate } from "react-router-dom";
 import halfBg from "../assets/halfBg.png";
@@ -23,9 +23,11 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setErrors({});
     const res = await register(registerData);
     if (res.status === 200) {
       const data = await res.json(res);
@@ -40,19 +42,24 @@ const Register = () => {
       });
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      const errorMap = {};
+      errorMap[data.errorType] = data.message;
+
+      setErrors(errorMap);
     }
   };
 
   return (
     <div className="register-container">
       <div className="left-container">
-        <img src={greenLogo} alt="Logo" className="logo" />
-        <h2 className="logo-title">
-          SPARK<sup>TM</sup>
-        </h2>
+        <div className="login-logo">
+          <img src={greenLogo} alt="Logo" className="logo" />
+          <h2 className="logo-title">
+            SPARK<sup>TM</sup>
+          </h2>
+        </div>
         <div className="register-content">
-          <div className="heading">
+          <div className="register-heading">
             <h1>Sign up to your Spark</h1>
           </div>
           <div className="top-content">
@@ -64,7 +71,10 @@ const Register = () => {
             </button>
           </div>
 
-          <form className="user-data" onSubmit={handleRegister}>
+          <form className="register-data" onSubmit={handleRegister}>
+            <label className="firstname-section" htmlFor="firstname">
+              First name
+            </label>
             <input
               type="text"
               name="firstname"
@@ -75,9 +85,13 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              placeholder="First Name"
-              required
             />
+            {errors.firstname && (
+              <p className="error-message">{errors.firstname}</p>
+            )}
+            <label className="lastname-section" htmlFor="lastname">
+              Last name
+            </label>
             <input
               type="text"
               name="lastname"
@@ -88,9 +102,13 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              placeholder="Last Name"
-              required
             />
+            {errors.lastname && (
+              <p className="error-message">{errors.lastname}</p>
+            )}
+            <label className="email-section" htmlFor="email">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -101,9 +119,13 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              placeholder="Email"
-              required
             />
+            {errors.email && (
+              <p className="error-message">{errors.email}</p>
+            )}
+            <label className="password-section" htmlFor="password">
+              Password
+            </label>
             <input
               type="password"
               name="password"
@@ -114,9 +136,16 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              placeholder="Password"
-              required
             />
+            {errors.password && (
+              <p className="error-message password hide-scrollbar">{errors.password}</p>
+            )}
+            <label
+              className="confirm-password-section"
+              htmlFor="confirmPassword"
+            >
+              Confirm Password
+            </label>
             <input
               type="password"
               name="confirmPassword"
@@ -127,15 +156,19 @@ const Register = () => {
                   [e.target.name]: e.target.value,
                 })
               }
-              placeholder="Confirm Password"
-              required
             />
-            <input type="checkbox" />
-            <p>
-              By creating an account, I agree to our <span>Terms of use </span>
-              and <span>Privacy Policy</span>{" "}
-            </p>
-            <button className="register-btn" type="submit">
+            {errors.confirmPassword && (
+              <p className="error-message">{errors.confirmPassword}</p>
+            )}
+            <div className="checkbox-div">
+              <input type="checkbox" />
+              <p>
+                By creating an account, I agree to our{" "}
+                <span>Terms of use </span>
+                and <span>Privacy Policy</span>{" "}
+              </p>
+            </div>
+            <button className="register-btn signup-btn" type="submit">
               Create an account
             </button>
           </form>

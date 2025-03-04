@@ -1,10 +1,10 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
@@ -12,7 +12,14 @@ button{
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-  
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.error-message {
+  color: #ee1d52;
+  font-family: "Poppins", serif;
+  font-weight: 400;
+  font-size: 0.7rem;
 }

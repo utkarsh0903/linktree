@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
-// import "../styles/login.css";
+import "../styles/register.css";
 import { login } from "../services";
 import { Link, useNavigate } from "react-router-dom";
 import greenLogo from "../assets/greenLogo.png";
@@ -12,6 +12,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,6 +23,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrors({});
     const res = await login(loginData);
     if (res.status === 200) {
       const data = await res.json(res.token);
@@ -34,63 +36,83 @@ const Login = () => {
       });
     } else {
       const data = await res.json(res);
-      alert(data.message);
+      const errorMap = {};
+      errorMap[data.errorType] = data.message;
+
+      setErrors(errorMap);
     }
   };
 
   return (
     <div className="login-container">
       <div className="left-container">
-        <img src={greenLogo} alt="Logo" className="logo" />
-        <h2 className="logo-title">
-          SPARK<sup>TM</sup>
-        </h2>
+        <div className="login-logo">
+          <img src={greenLogo} alt="Logo" className="logo" />
+          <h2 className="logo-title">
+            SPARK<sup>TM</sup>
+          </h2>
+        </div>
         <div className="register-content">
-          <div className="heading">
+          <div className="register-heading">
             <h1>Sign in to your Spark</h1>
           </div>
+
+          <form className="register-data login-data" onSubmit={handleLogin}>
+            <input
+              type="email"
+              name="email"
+              value={loginData.email}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              placeholder="Spark/Username"
+            />
+            {errors.email && (
+              <p className="error-message">{errors.email}</p>
+            )}
+            <input
+              type="password"
+              name="password"
+              value={loginData.password}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              placeholder="Password"
+            />
+            {errors.password && (
+              <p className="error-message">{errors.password}</p>
+            )}
+            <button className="signup-btn login-btn" type="submit">
+              Log in
+            </button>
+          </form>
+          <div className="forget-password">
+            <p>Forgot password?</p>
+          </div>
+
+          <div className="signup-request">
+            <p>
+              Don't have an account?{" "}
+              <Link to="/register" className="register-link">
+                Sign up
+              </Link>
+            </p>
+          </div>
+          <div className="login-request ">
+            <p>
+              This site is protected by reCAPTCHA and the{" "}
+              <span>Google Privacy Policy</span>and{" "}
+              <span>Terms of Service</span>
+              apply.
+            </p>
+          </div>
         </div>
-        <form className="user-data" onSubmit={handleLogin}>
-          <input
-            type="email"
-            name="email"
-            value={loginData.email}
-            onChange={(e) =>
-              setLoginData({
-                ...loginData,
-                [e.target.name]: e.target.value,
-              })
-            }
-            placeholder="Email id"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            value={loginData.password}
-            onChange={(e) =>
-              setLoginData({
-                ...loginData,
-                [e.target.name]: e.target.value,
-              })
-            }
-            placeholder="Password"
-            required
-          />
-          <button className="login-btn" type="submit">
-            Log in
-          </button>
-        </form>
-        <div className="signup-request">
-          <p>
-            Don't have an account?<Link to="/"> Sign up</Link>
-          </p>
-        </div>
-        <p>
-          This site is protected by reCAPTCHA and the{" "}
-          <span>Google Privacy Policy</span>and <span>Terms of Service</span>
-          apply.
-        </p>
       </div>
       <div className="right-container">
         <img className="half-bg" src={halfBg} alt="halfBg" />

@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-// import "../styles/settings.css";
-// import { updateUser } from "../services";
-import { useNavigate } from "react-router";
+import "../styles/settings.css";
+import { updateUser } from "../services";
 
-const Settings = ({ activeUser }) => {
+const Settings = ({ activeUser, setActiveUser }) => {
   const [userDetails, setUserDetails] = useState(activeUser);
   const [updatedFields, setUpdatedFields] = useState({});
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState(activeUser.password);
+  const [errors, setErrors] = useState({});
 
   const handleSave = async () => {
-    if(userDetails.password != confirmPassword){
-      alert("Password do not match");
+    let newErrors = {};
+
+    if (userDetails.password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match!";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
     if (userDetails.firstname !== activeUser.firstname) {
@@ -30,27 +35,33 @@ const Settings = ({ activeUser }) => {
 
     if (Object.keys(updatedFields).length === 0) {
       alert("No changes detected.");
+      setErrors({});
       return;
     }
-
-    console.log(updatedFields)
-    // const res = await updateUser(updatedFields);
-    // if (res.status === 200) {
-    //   if(nameChanged) updateShortName(updatedFields.username);
-    //   const data = await res.json(res);
-    //   alert(data.message);
-    //   setActiveUser(userDetails);
-    //   setUpdatedFields({});
-    // } else {
-    //   const data = await res.json(res);
-    //   alert(data.message);
-    //   setUserDetails(activeUser);
-    // }
+    const res = await updateUser(updatedFields);
+    if (res.status === 200) {
+      const data = await res.json(res);
+      alert(data.message);
+      setActiveUser(userDetails);
+      setUpdatedFields({});
+      setErrors({});
+    } else {
+      const data = await res.json(res);
+      let backendErrors = {};
+      if (data.errorType) {
+        backendErrors[data.errorType] = data.message;
+      }
+      setErrors(backendErrors);
+      setUserDetails(activeUser);
+      setConfirmPassword(activeUser.password);
+      setUpdatedFields({});
+    }
   };
 
   return (
-    <div className="settings-container">
-      {console.log(userDetails)}
+    <div className="settings-container hide-scrollbar">
+      <h2 className="settings-heading">Edit Profile</h2>
+      <hr />
       <div className="edit-first-name">
         <label className="name-section" htmlFor="firstname">
           First name
@@ -66,6 +77,9 @@ const Settings = ({ activeUser }) => {
             })
           }
         />
+        {errors.firstname && (
+          <p className="error-message">{errors.firstname}</p>
+        )}
       </div>
       <div className="edit-last-name">
         <label className="name-section" htmlFor="lastname">
@@ -82,6 +96,7 @@ const Settings = ({ activeUser }) => {
             })
           }
         />
+        {errors.lastname && <p className="error-message">{errors.lastname}</p>}
       </div>
       <div className="edit-email">
         <label htmlFor="email">Email</label>
@@ -97,9 +112,10 @@ const Settings = ({ activeUser }) => {
           }
           required
         />
+        {errors.email && <p className="error-message">{errors.email}</p>}
       </div>
       <div className="edit-password">
-        <label htmlFor="mobile">Password</label>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
@@ -111,6 +127,7 @@ const Settings = ({ activeUser }) => {
             })
           }
         />
+        {errors.password && <p className="error-message">{errors.password}</p>}
       </div>
       <div className="edit-confirm-password">
         <label htmlFor="confirm-password">Confirm Password</label>
@@ -118,10 +135,11 @@ const Settings = ({ activeUser }) => {
           type="password"
           name="confirm-password"
           value={confirmPassword}
-          onChange={(e) =>
-            setConfirmPassword(e.target.value)
-          }
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
+        {errors.confirmPassword && (
+        <p className="error-message">{errors.confirmPassword}</p>
+      )}
       </div>
       <button className="save-btn signup-btn" onClick={() => handleSave()}>
         Save
